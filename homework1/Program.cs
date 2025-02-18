@@ -1,37 +1,91 @@
-﻿using System.Globalization;
-
-System.Console.Write("Enter the string for conversion: ");
-string line = System.Console.ReadLine();
+﻿System.Console.Write("Enter the string for conversion: ");
+string? line = System.Console.ReadLine();
 if (line is null)
 {
       return -1;
 }
 
-string result = Transformation(line);
+var (result, index) = Transformation(line);
 System.Console.WriteLine("Result: " + result);
+string originLine = ReverseConversion(result, index);
+System.Console.WriteLine(originLine);
+System.Console.WriteLine(line == originLine);
 
-string Transformation(string line)
+(string TmpString, int Index) Transformation(string line)
 {
       int length = line.Length;
-      string[] tmpArray = new string[length];
+      var rotations = new List<string>(length);
       for (int i = 0; i < length; ++i)
       {
-            tmpArray[i] = line.Substring(i) + line.Substring(0, i);
+            string rotation = line.Substring(i) + line.Substring(0, i);
+            rotations.Add(rotation);
       }
 
-      Array.Sort(tmpArray);
-      foreach (string i in tmpArray)
+      var sortedRotations = rotations.OrderBy(r => r).ToList();
+      foreach (string i in sortedRotations)
       {
             System.Console.WriteLine(i);
       }
 
-      string tmpString = string.Empty;
-      foreach (string i in tmpArray)
+      char[] tmpString = new char[length];
+      int index = -1;
+      for (int i = 0; i < length; ++i)
       {
-            tmpString += i[i.Length - 1];
+            tmpString[i] = sortedRotations[i][length - 1];
+            if (sortedRotations[i] == line)
+            {
+                  index = i;
+            }
       }
 
-      return tmpString;
+      return (new string(tmpString), index);
+}
+
+string ReverseConversion(string modifiedLine, int index)
+{
+      int length = modifiedLine.Length;
+      char[] result = new char[length];
+      char[] sortedModifiedLine = modifiedLine.ToCharArray();
+      Array.Sort(sortedModifiedLine);
+      var str = new string(sortedModifiedLine);
+
+      int[] next = new int[length];
+      var count = new Dictionary<char, int>();
+      for (int i = 0; i < length; ++i)
+      {
+            if (!count.ContainsKey(modifiedLine[i]))
+            {
+                  count[modifiedLine[i]] = 0;
+            }
+
+            count[modifiedLine[i]]++;
+      }
+
+      var sortedChars = count.Keys.ToList();
+      sortedChars.Sort();
+      int[] positions = new int[sortedChars.Count];
+      for (int i = 0; i < sortedChars.Count; ++i)
+      {
+            positions[i] = i == 0 ? 0 : positions[i - 1] + count[sortedChars[i - 1]];
+      }
+
+      for (int i = 0; i < length; ++i)
+      {
+            char symbol = modifiedLine[i];
+            int tmpIndex = sortedChars.IndexOf(symbol);
+            result[positions[tmpIndex]] = symbol;
+            next[positions[tmpIndex]] = i;
+            positions[tmpIndex]++;
+      }
+
+      char[] originString = new char[length];
+      for (int i = 0; i < length; ++i)
+      {
+            originString[i] = sortedModifiedLine[index];
+            index = next[index];
+      }
+
+      return new string(originString);
 }
 
 return 0;
