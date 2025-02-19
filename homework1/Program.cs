@@ -1,15 +1,38 @@
-﻿System.Console.Write("Enter the string for conversion: ");
+﻿if (!TestTransformation() || !TestReverseConversion() || TestIsARightSymbol())
+{
+      return -1;
+}
+
+System.Console.Write("Enter a string consisting only of letters or numbers: ");
 string? line = System.Console.ReadLine();
 if (line is null)
 {
       return -1;
 }
 
+if (!IsARightSymbol(line))
+{
+      return -1;
+}
+
 var (result, index) = Transformation(line);
-System.Console.WriteLine("Result: " + result);
+System.Console.WriteLine("Result: " + result + " index: " + index);
 string originLine = ReverseConversion(result, index);
 System.Console.WriteLine(originLine);
 System.Console.WriteLine(line == originLine);
+
+bool IsARightSymbol(string str)
+{
+      for (int i = 0; i < str.Length; ++i)
+      {
+            if (!char.IsLetterOrDigit(str[i]))
+            {
+                  return false;
+            }
+      }
+
+      return true;
+}
 
 (string TmpString, int Index) Transformation(string line)
 {
@@ -89,3 +112,22 @@ string ReverseConversion(string modifiedLine, int index)
 }
 
 return 0;
+
+bool TestTransformation()
+{
+      string str = "weekend";
+      return ("nwekeed", 6) == Transformation(str);
+}
+
+bool TestReverseConversion()
+{
+      string str = "psaccuuphh";
+      int index = 1;
+      return ReverseConversion(str, index) == "chupachups";
+}
+
+bool TestIsARightSymbol()
+{
+      string str = "!!@$^&*&^$";
+      return IsARightSymbol(str);
+}
