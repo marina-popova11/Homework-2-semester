@@ -1,38 +1,20 @@
-﻿if (!TestTransformation() || !TestReverseConversion() || TestIsARightSymbol())
+﻿if (!TestTransformation() || !TestReverseConversion())
 {
       return -1;
 }
 
-System.Console.Write("Enter a string consisting only of letters or numbers: ");
+System.Console.Write("Enter a string consisting of letters or numbers: ");
 string? line = System.Console.ReadLine();
 if (line is null)
 {
       return -1;
 }
 
-if (!IsARightSymbol(line))
-{
-      return -1;
-}
-
 var (result, index) = Transformation(line);
-System.Console.WriteLine("Result: " + result + " index: " + index);
+System.Console.WriteLine($"Result: {result} index: {index}");
 string originLine = ReverseConversion(result, index);
 System.Console.WriteLine(originLine);
 System.Console.WriteLine(line == originLine);
-
-bool IsARightSymbol(string str)
-{
-      for (int i = 0; i < str.Length; ++i)
-      {
-            if (!char.IsLetterOrDigit(str[i]))
-            {
-                  return false;
-            }
-      }
-
-      return true;
-}
 
 (string TmpString, int Index) Transformation(string line)
 {
@@ -45,12 +27,8 @@ bool IsARightSymbol(string str)
       }
 
       var sortedRotations = rotations.OrderBy(r => r).ToList();
-      foreach (string i in sortedRotations)
-      {
-            System.Console.WriteLine(i);
-      }
 
-      char[] tmpString = new char[length];
+      var tmpString = new char[length];
       int index = -1;
       for (int i = 0; i < length; ++i)
       {
@@ -67,12 +45,12 @@ bool IsARightSymbol(string str)
 string ReverseConversion(string modifiedLine, int index)
 {
       int length = modifiedLine.Length;
-      char[] result = new char[length];
-      char[] sortedModifiedLine = modifiedLine.ToCharArray();
+      var result = new char[length];
+      var sortedModifiedLine = modifiedLine.ToCharArray();
       Array.Sort(sortedModifiedLine);
       var str = new string(sortedModifiedLine);
 
-      int[] next = new int[length];
+      var next = new int[length];
       var count = new Dictionary<char, int>();
       for (int i = 0; i < length; ++i)
       {
@@ -86,7 +64,7 @@ string ReverseConversion(string modifiedLine, int index)
 
       var sortedChars = count.Keys.ToList();
       sortedChars.Sort();
-      int[] positions = new int[sortedChars.Count];
+      var positions = new int[sortedChars.Count];
       for (int i = 0; i < sortedChars.Count; ++i)
       {
             positions[i] = i == 0 ? 0 : positions[i - 1] + count[sortedChars[i - 1]];
@@ -101,7 +79,7 @@ string ReverseConversion(string modifiedLine, int index)
             positions[tmpIndex]++;
       }
 
-      char[] originString = new char[length];
+      var originString = new char[length];
       for (int i = 0; i < length; ++i)
       {
             originString[i] = sortedModifiedLine[index];
@@ -115,8 +93,7 @@ return 0;
 
 bool TestTransformation()
 {
-      string str = "weekend";
-      return ("nwekeed", 6) == Transformation(str);
+      return ("nwekeed", 6) == Transformation("weekend");
 }
 
 bool TestReverseConversion()
@@ -124,10 +101,4 @@ bool TestReverseConversion()
       string str = "psaccuuphh";
       int index = 1;
       return ReverseConversion(str, index) == "chupachups";
-}
-
-bool TestIsARightSymbol()
-{
-      string str = "!!@$^&*&^$";
-      return IsARightSymbol(str);
 }
