@@ -65,7 +65,12 @@ public class Tests
             trie.AddElement("milk");
             trie.AddElement("do");
             trie.AddElement("car");
-            return trie.Remove("do");
+            if (trie.Remove("do"))
+            {
+                  return trie.Size == 4;
+            }
+
+            return false;
       }
 
       private static bool HowManyStartsWithPrefixTest()
