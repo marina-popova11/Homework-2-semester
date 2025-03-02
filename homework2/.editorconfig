@@ -1,0 +1,15 @@
+[*.cs]
+
+# IDE0160: Преобразовать в namespace с заданной областью видимости блока
+dotnet_diagnostic.IDE0160.severity = none
+[*.cs]
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+[*.cs]
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1649: File name should match first type name
+dotnet_diagnostic.SA1649.severity = none
