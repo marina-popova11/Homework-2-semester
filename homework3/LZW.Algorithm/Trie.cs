@@ -1,17 +1,19 @@
 namespace LZW.Algorithm;
 
+/// <summary>
+/// This trie.
+/// </summary>
 public class Trie
 {
       private readonly TrieNode root = new TrieNode();
-      private int nextCode = 0;
 
-      /// <summary>
-      /// Initializes a new instance of the <see cref="Trie"/> class.
-      /// </summary>
-      public Trie()
-      {
-            this.root.ElementCode = this.nextCode++;
-      }
+      // /// <summary>
+      // /// Initializes a new instance of the <see cref="Trie"/> class.
+      // /// </summary>
+      // public Trie()
+      // {
+      //       this.root.ElementCode = this.NextCode++;
+      // }
 
       /// <summary>
       /// Gets the number of unique symbols in the trie.
@@ -34,7 +36,6 @@ public class Trie
                   }
 
                   current = current.Children[el];
-                  ++current.CountOfChildren;
             }
 
             current.ElementCode = code;
@@ -65,10 +66,8 @@ public class Trie
       {
             public char Symbol { get; set; }
 
-            public int ElementCode { get; set; } = 0;
+            public int ElementCode { get; set; } = -1;
 
-            public int CountOfChildren { get; set; } = 0;
-
-            public Dictionary<byte, TrieNode> Children { get; }
+            public Dictionary<byte, TrieNode> Children { get; } = new Dictionary<byte, TrieNode>();
       }
 }

@@ -13,13 +13,12 @@ public class LZWCompression
       public void Compress(string filePath, string compressedFilePath)
       {
             var trie = new Trie();
+            int nextCode = 0;
 
             for (int i = 0; i < 256; ++i)
             {
-                  trie.AddElement(new byte[] { (byte)i }, trie.NextCode); // (byte)i — это приведение значения переменной i к типу byte.\
-                  //  Поскольку i является целым числом (int), оно преобразуется в байт. Это необходимо, потому что Trie работает с байтами, \
-                  // а не с целыми числами. new byte[] { ... } — создаёт новый массив байтов, содержащий один элемент: (byte)i.
-                  ++trie.NextCode;
+                  trie.AddElement(new byte[] { (byte)i }, nextCode); // new byte[] { ... } — создаёт новый массив байтов, содержащий один элемент: (byte)i.
+                  ++nextCode;
             }
 
             using (FileStream sourceStream = new FileStream(filePath, FileMode.Open))
@@ -33,11 +32,11 @@ public class LZWCompression
                   {
                         currentStr[length] = (byte)el;
                         ++length;
-                        var code = trie.Contains(currentStr.Take(length).ToArray()); // ищем массив в боре по длине
+                        var code = trie.Contains(currentStr.Take(length).ToArray());
                         if (code == -1)
                         {
-                              trie.AddElement(currentStr.Take(length).ToArray(), trie.NextCode);
-                              ++trie.NextCode;
+                              trie.AddElement(currentStr.Take(length).ToArray(), nextCode);
+                              ++nextCode;
                               writer.Write(trie.Contains(currentStr.Take(length - 1).ToArray()));
                               length = 0;
                               currentStr[length] = (byte)el;
@@ -51,5 +50,4 @@ public class LZWCompression
                   }
             }
       }
-
 }
