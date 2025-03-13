@@ -9,45 +9,88 @@ public class LZWCompression
       /// A function for compressing data and moving character codes to a compressed file.
       /// </summary>
       /// <param name="filePath">The path to the source file.</param>
-      /// <param name="compressedFilePath">The path to the compressed file with the extension .zipped.</param>
-      public void Compress(string filePath, string compressedFilePath)
+      /// <returns>A sequence of bytes.</returns>
+      public (byte[] Array, double CompressionRatio) Compress(string filePath)
       {
+            var input = File.ReadAllBytes(filePath);
             var trie = new Trie();
-            int nextCode = 0;
-
             for (int i = 0; i < 256; ++i)
             {
-                  trie.AddElement(new byte[] { (byte)i }, nextCode); // new byte[] { ... } — создаёт новый массив байтов, содержащий один элемент: (byte)i.
-                  ++nextCode;
+                  trie.AddElement(new byte[] { (byte)i });
             }
 
-            using (FileStream sourceStream = new FileStream(filePath, FileMode.Open))
-            using (FileStream targetStream = File.Create(compressedFilePath))
-            using (BinaryWriter writer = new BinaryWriter(targetStream))
+            var output = new List<int>();
+            var current = new List<byte>();
+
+            foreach (var el in input)
             {
-                  byte[] currentStr = new byte[1000];
-                  int length = 0;
-                  int el;
-                  while ((el = sourceStream.ReadByte()) != -1)
+                  var next = new List<byte>(current) { el };
+                  if (trie.Contains(next.ToArray()) != -1)
                   {
-                        currentStr[length] = (byte)el;
-                        ++length;
-                        var code = trie.Contains(currentStr.Take(length).ToArray());
-                        if (code == -1)
+                        current = next;
+                  }
+                  else
+                  {
+                        output.Add(trie.Contains(current.ToArray()));
+                        trie.AddElement(next.ToArray());
+                        current = new List<byte> { el };
+                  }
+            }
+
+            if (output.Count > 0)
+            {
+                  output.Add(trie.Contains(current.ToArray()));
+            }
+
+            var outputFile = this.ToByteArray(output.ToArray());
+            return (outputFile, (double)outputFile.Length / input.Length);
+      }
+
+      private byte[] ToByteArray(int[] list)
+      {
+            var byteList = new List<byte>();
+            byte currentByte = 0;
+            int bitPosition = 0;
+
+            foreach (int code in list)
+            {
+                  int bitCount = this.GetBitCount(code);
+                  for (int i = bitCount - 1; i >= 0; --i)
+                  {
+                        currentByte |= (byte)(((code >> i) & 1) << (7 - bitPosition));
+                        bitPosition++;
+
+                        if (bitPosition == 8)
                         {
-                              trie.AddElement(currentStr.Take(length).ToArray(), nextCode);
-                              ++nextCode;
-                              writer.Write(trie.Contains(currentStr.Take(length - 1).ToArray()));
-                              length = 0;
-                              currentStr[length] = (byte)el;
-                              ++length;
+                              byteList.Add(currentByte);
+                              bitPosition = 0;
+                              currentByte = 0;
                         }
                   }
-
-                  if (length > 0)
-                  {
-                        writer.Write(trie.Contains(currentStr.Take(length).ToArray()));
-                  }
             }
+
+            if (bitPosition > 0)
+            {
+                  byteList.Add(currentByte);
+            }
+
+            return byteList.ToArray();
+      }
+
+      private int GetBitCount(int value)
+      {
+            if (value == 0)
+            {
+                  return 1;
+            }
+
+            int bitCount = 0;
+            while (value > 0)
+            {
+                  value >>= 1;
+                  ++bitCount;
+            }
+
+            return bitCount;
       }
 }

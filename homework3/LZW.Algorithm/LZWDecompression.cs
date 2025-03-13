@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace LZW.Algorithm;
 
 /// <summary>
@@ -8,45 +10,47 @@ public class LZWDecompression
       /// <summary>
       /// A function for decompressing data.
       /// </summary>
-      /// <param name="compressedFilePath">The path to the compressed file with the extension .zipped.</param>
-      /// <param name="targetFilePath">The path to the source file.</param>
-      public void Decompress(string compressedFilePath, string targetFilePath)
+      /// <param name="filePath">The path to the compressed file with the extension .zipped.</param>
+      /// <returns>A sequence of bytes.</returns>
+      /// <exception cref="InvalidDataException">Invalid data.</exception>
+      public byte[] Decompress(string filePath)
       {
-            var dict = new Dictionary<int, byte[]>();
-            int nextCode = 0;
+            var input = File.ReadAllBytes(filePath);
+            var dictionary = new Dictionary<int, byte[]>();
             for (int i = 0; i < 256; ++i)
             {
-                  dict[nextCode] = new byte[] { (byte)i };
-                  ++nextCode;
+                  dictionary[i] = new byte[] { (byte)i };
             }
 
-            using (FileStream compressedStream = new FileStream(compressedFilePath, FileMode.Open))
-            using (FileStream targetStream = new FileStream(targetFilePath, FileMode.Create))
-            using (BinaryWriter writer = new BinaryWriter(targetStream))
-            using (BinaryReader reader = new BinaryReader(compressedStream))
-            {
-                  int previousCode = reader.ReadInt32();
-                  writer.Write(dict[previousCode]);
-                  while (compressedStream.Position < compressedStream.Length)
-                  {
-                        int currentCode = reader.ReadInt32();
-                        byte[] currentStr = new byte[1000];
-                        if (dict.ContainsKey(currentCode))
-                        {
-                              currentStr = dict[currentCode];
-                        }
-                        else
-                        {
-                              currentStr = dict[previousCode].Concat(new byte[] { dict[previousCode][0] }).ToArray();
-                        }
+            var compressed = this.FromByteArray(input);
+            var output = new List<byte>();
+            var current = dictionary[compressed[0]];
+            output.AddRange(current);
 
-                        writer.Write(currentStr);
-                        byte[] newStr = dict[previousCode].Concat(new byte[] { currentStr[0] }).ToArray();
-                        dict[nextCode] = newStr;
-                        ++nextCode;
-                        previousCode = currentCode;
-                        dict[previousCode] = currentStr;
+            for (int i = 1; i < compressed.Count; ++i)
+            {
+                  var code = compressed[i];
+                  if (dictionary.ContainsKey(code))
+                  {
+                        var element = dictionary[code];
+                        output.AddRange(element);
+                        var entry = current.Concat(new[] { element[0] }).ToArray();
+                        dictionary[dictionary.Count] = entry;
+                        current = element;
+                  }
+                  else
+                  {
+                        var entry = current.Concat(new byte[] { current[0] }).ToArray();
+                        output.AddRange(entry);
+                        dictionary[dictionary.Count] = entry;
+                        current = entry;
                   }
             }
+
+            return output.ToArray();
       }
+
+      // private List<int> FromByteArray(byte[] array)
+      // {
+      // }
 }
