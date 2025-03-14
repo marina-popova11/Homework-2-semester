@@ -6,12 +6,14 @@ namespace LZW.Algorithm;
 public class Trie
 {
       private readonly TrieNode root;
-      private int nextCode;
+      private int nextCode = 0;
 
+      /// <summary>
+      /// Initializes a new instance of the <see cref="Trie"/> class.
+      /// </summary>
       public Trie()
       {
-            this.root = new TrieNode(-1);
-            this.nextCode = 0;
+            this.root = new TrieNode(this.nextCode++);
       }
 
       /// <summary>
@@ -20,6 +22,11 @@ public class Trie
       /// <param name="text">The string to add.</param>
       public void AddElement(byte[] text)
       {
+            if (text.Length > 100)
+            {
+                  return;
+            }
+
             var current = this.root;
             foreach (var el in text)
             {
@@ -52,27 +59,6 @@ public class Trie
 
             return current.ElementCode;
       }
-
-      // /// <summary>
-      // /// Checks whether the word is contained in the tree.
-      // /// </summary>
-      // /// <param name="word">The string to check.</param>
-      // /// <returns>Returns the code of the given string.</returns>
-      // public int Contains(byte[] word)
-      // {
-      //       var current = this.root;
-      //       foreach (var el in word)
-      //       {
-      //             if (!current.Children.ContainsKey(el))
-      //             {
-      //                   return -1;
-      //             }
-
-      //             current = current.Children[el];
-      //       }
-
-      //       return current.ElementCode;
-      // }
 
       private class TrieNode
       {

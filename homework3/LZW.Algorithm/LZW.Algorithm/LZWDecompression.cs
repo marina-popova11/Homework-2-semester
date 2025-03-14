@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace LZW.Algorithm;
 
 /// <summary>
@@ -12,7 +10,6 @@ public class LZWDecompression
       /// </summary>
       /// <param name="filePath">The path to the compressed file with the extension .zipped.</param>
       /// <returns>A sequence of bytes.</returns>
-      /// <exception cref="InvalidDataException">Invalid data.</exception>
       public byte[] Decompress(string filePath)
       {
             var input = File.ReadAllBytes(filePath);
@@ -30,27 +27,37 @@ public class LZWDecompression
             for (int i = 1; i < compressed.Count; ++i)
             {
                   var code = compressed[i];
+                  byte[] element;
                   if (dictionary.ContainsKey(code))
                   {
-                        var element = dictionary[code];
-                        output.AddRange(element);
-                        var entry = current.Concat(new[] { element[0] }).ToArray();
-                        dictionary[dictionary.Count] = entry;
-                        current = element;
+                        element = dictionary[code];
                   }
                   else
                   {
-                        var entry = current.Concat(new byte[] { current[0] }).ToArray();
-                        output.AddRange(entry);
-                        dictionary[dictionary.Count] = entry;
-                        current = entry;
+                        element = current.Concat(new[] { current[0] }).ToArray();
                   }
+
+                  output.AddRange(element);
+                  var entry = current.Concat(new[] { element[0] }).ToArray();
+                  dictionary[dictionary.Count] = entry;
+                  current = element;
             }
 
             return output.ToArray();
       }
 
-      // private List<int> FromByteArray(byte[] array)
-      // {
-      // }
+      private List<int> FromByteArray(byte[] array)
+      {
+            var result = new List<int>();
+            for (int i = 0; i < array.Length; i += 4)
+            {
+                  if (i + 4 <= array.Length)
+                  {
+                        int code = BitConverter.ToInt32(array, i);
+                        result.Add(code);
+                  }
+            }
+
+            return result;
+      }
 }

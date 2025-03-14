@@ -41,9 +41,9 @@ static void DecompressedFile(string filePath)
             System.Console.WriteLine("File must have .zipped extension for decompressing.");
       }
 
-      // var decompress = new LZWDecompression();
-      // var decompressed = decompress.Decompress(filePath);
-      // var outputPath = filePath.Replace(".zipped", "");
-      // File.WriteAllBytes(outputPath, decompressed);
-      // System.Console.WriteLine($"Decompressing completed.");
+      var decompress = new LZWDecompression();
+      var decompressed = decompress.Decompress(filePath);
+      var outputPath = filePath.Replace(".zipped", "");
+      File.WriteAllBytes(outputPath, decompressed);
+      System.Console.WriteLine($"Decompressing completed.");
 }
