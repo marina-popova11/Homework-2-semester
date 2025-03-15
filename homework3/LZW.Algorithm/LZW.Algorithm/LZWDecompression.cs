@@ -48,16 +48,46 @@ public class LZWDecompression
 
       private List<int> FromByteArray(byte[] array)
       {
-            var result = new List<int>();
-            for (int i = 0; i < array.Length; i += 4)
+            var intList = new List<int>();
+            int i = 0;
+
+            while (i < array.Length)
             {
-                  if (i + 4 <= array.Length)
+                  byte firstByte = array[i];
+
+                  if (firstByte < 0x80) // Однобайтовое число
                   {
-                        int code = BitConverter.ToInt32(array, i);
-                        result.Add(code);
+                        intList.Add(firstByte);
+                        i += 1;
+                  }
+                  else if ((firstByte & 0xC0) == 0x80) // Двухбайтовое число
+                  {
+                        if (i + 1 >= array.Length)
+                        {
+                              throw new InvalidOperationException("Invalid byte array format");
+                        }
+
+                        int value = ((firstByte & 0x3F) << 8) | array[i + 1];
+                        intList.Add(value);
+                        i += 2;
+                  }
+                  else if ((firstByte & 0xE0) == 0xC0) // Трехбайтовое число
+                  {
+                        if (i + 2 >= array.Length)
+                        {
+                              throw new InvalidOperationException("Invalid byte array format");
+                        }
+
+                        int value = ((firstByte & 0x1F) << 16) | (array[i + 1] << 8) | array[i + 2];
+                        intList.Add(value);
+                        i += 3;
+                  }
+                  else
+                  {
+                        throw new InvalidOperationException("Invalid byte array format");
                   }
             }
 
-            return result;
+            return intList;
       }
 }
