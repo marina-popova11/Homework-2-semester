@@ -3,7 +3,7 @@ using NUnit.Framework.Constraints;
 
 namespace LZW.Algorithm.Tests;
 
-public class Tests
+public class TestForCompression
 {
     private LZWCompression lzw = new(); 
     [SetUp]

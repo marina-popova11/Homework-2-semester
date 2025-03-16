@@ -13,6 +13,11 @@ public class LZWDecompression
       public byte[] Decompress(string filePath)
       {
             var input = File.ReadAllBytes(filePath);
+            if (input.Length == 0)
+            {
+                  return Array.Empty<byte>();
+            }
+
             var dictionary = new Dictionary<int, byte[]>();
             for (int i = 0; i < 256; ++i)
             {

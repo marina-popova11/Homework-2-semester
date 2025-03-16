@@ -70,45 +70,4 @@ public class LZWCompression
 
             return byteList.ToArray();
       }
-
-      // {
-      //       var byteList = new List<byte>();
-      //       byte currentByte = 0;
-      //       int bitPosition = 0;
-      //       foreach (int code in list)
-      //       {
-      //             int bitCount = this.GetBitCount(code);
-      //             for (int i = bitCount - 1; i >= 0; --i)
-      //             {
-      //                   currentByte |= (byte)(((code >> i) & 1) << (7 - bitPosition));
-      //                   bitPosition++;
-      //                   if (bitPosition == 8)
-      //                   {
-      //                         byteList.Add(currentByte);
-      //                         bitPosition = 0;
-      //                         currentByte = 0;
-      //                   }
-      //             }
-      //       }
-      //       if (bitPosition > 0)
-      //       {
-      //             byteList.Add(currentByte);
-      //       }
-      //       return byteList.ToArray();
-      // }
-
-      // private int GetBitCount(int value)
-      // {
-      //       if (value == 0)
-      //       {
-      //             return 1;
-      //       }
-      //       int bitCount = 0;
-      //       while (value > 0)
-      //       {
-      //             value >>= 1;
-      //             ++bitCount;
-      //       }
-      //       return bitCount;
-      // }
 }
