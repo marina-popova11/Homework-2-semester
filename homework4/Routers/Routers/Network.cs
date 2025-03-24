@@ -19,7 +19,19 @@ public class Network
       /// </summary>
       public int RouterNumber { get; set; }
 
-      private List<Edge> Vertexes { get; set; }
+      /// <summary>
+      /// Gets or sets list of edges.
+      /// </summary>
+      public List<Edge> Vertexes { get; set; }
+
+      /// <summary>
+      /// Get list of edges.
+      /// </summary>
+      /// <returns>list of edges.</returns>
+      public List<Edge> GetVertexes()
+      {
+            return new List<Edge>(this.Vertexes);
+      }
 
       /// <summary>
       /// Add edge between two vertexes.
@@ -30,30 +42,83 @@ public class Network
       public void AddEdge(int fv, int sv, int bandwidth)
       {
             this.Vertexes.Add(new Edge(fv, sv, bandwidth));
+            this.RouterNumber = Math.Max(this.RouterNumber, Math.Max(fv, sv) + 1);
+      }
+
+      /// <summary>
+      /// Get bandwidth of edge.
+      /// </summary>
+      /// <param name="fv">first vertex.</param>
+      /// <param name="sv">second vertex.</param>
+      /// <returns>bandwidth.</returns>
+      public int GetBandwidth(int fv, int sv)
+      {
+            var edge = this.Vertexes.FirstOrDefault(e => (e.FirstVertex == fv && e.SecondVertex == sv) ||
+            (e.FirstVertex == sv && e.SecondVertex == fv));
+            if (edge == null)
+            {
+                  return 0;
+            }
+
+            return edge.Bandwidth;
       }
 
       /// <summary>
       /// An algorithm for finding a minimum spanning tree.
       /// </summary>
-      /// <param name="network"></param>
-      public void PrimAlgorithm(Network network)
+      /// <param name="network">Current network.</param>
+      /// <returns>A minimal list with maximum bandwidth.</returns>
+      public List<Edge> PrimAlgorithm()
       {
-
-      }
-
-      private class Edge
-      {
-            public Edge(int fv, int sv, int bandwidth)
+            if (this.RouterNumber == 0 || this.Vertexes.Count == 0)
             {
-                  this.FirstVertex = fv;
-                  this.SecondVertex = sv;
-                  this.Bandwidth = bandwidth;
+                  return new List<Edge>();
             }
 
-            public int FirstVertex { get; set; }
+            var newNet = new List<Edge>();
+            var visited = new HashSet<int>();
+            var priorityQueue = new PriorityQueue<Edge, int>();
+            var adjacencyList = new Dictionary<int, List<Edge>>();
+            foreach (var el in this.Vertexes)
+            {
+                  if (!adjacencyList.ContainsKey(el.FirstVertex))
+                  {
+                        adjacencyList[el.FirstVertex] = new List<Edge>();
+                  }
 
-            public int SecondVertex { get; set; }
+                  if (!adjacencyList.ContainsKey(el.SecondVertex))
+                  {
+                        adjacencyList[el.SecondVertex] = new List<Edge>();
+                  }
+            }
 
-            public int Bandwidth { get; set; }
+            int startVertex = this.Vertexes[0].FirstVertex;
+            visited.Add(startVertex);
+            foreach (var el in adjacencyList[startVertex])
+            {
+                  priorityQueue.Enqueue(el, el.Bandwidth);
+            }
+
+            while (priorityQueue.Count != 0 && visited.Count < this.RouterNumber)
+            {
+                  var currentEdge = priorityQueue.Dequeue();
+                  if (visited.Contains(currentEdge.SecondVertex))
+                  {
+                        continue;
+                  }
+
+                  newNet.Add(currentEdge);
+                  visited.Add(currentEdge.SecondVertex);
+
+                  foreach (var el in adjacencyList[currentEdge.SecondVertex])
+                  {
+                        if (!visited.Contains(el.SecondVertex))
+                        {
+                              priorityQueue.Enqueue(el, el.Bandwidth);
+                        }
+                  }
+            }
+
+            return newNet;
       }
 }

@@ -8,13 +8,14 @@ if (filename == null)
 }
 
 var network = ReadFromFile(filename);
+var newNet = network.PrimAlgorithm();
 
 Network ReadFromFile(string filename)
 {
       var network = new Network();
       using (StreamReader reader = new StreamReader(filename))
       {
-            string line;
+            string? line;
             while ((line = reader.ReadLine()) != null)
             {
                   var parts = line.Split(":");
