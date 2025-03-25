@@ -77,7 +77,7 @@ public class Network
 
             var newNet = new List<Edge>();
             var visited = new HashSet<int>();
-            var priorityQueue = new PriorityQueue<Edge, int>();
+            var priorityQueue = new PriorityQueue<Edge, int>(Comparer<int>.Create((x, y) => y.CompareTo(x)));
             var adjacencyList = new Dictionary<int, List<Edge>>();
             foreach (var el in this.Vertexes)
             {
@@ -90,6 +90,9 @@ public class Network
                   {
                         adjacencyList[el.SecondVertex] = new List<Edge>();
                   }
+
+                  adjacencyList[el.FirstVertex].Add(el);
+                  adjacencyList[el.SecondVertex].Add(new Edge(el.SecondVertex, el.FirstVertex, el.Bandwidth));
             }
 
             int startVertex = this.Vertexes[0].FirstVertex;
@@ -99,7 +102,7 @@ public class Network
                   priorityQueue.Enqueue(el, el.Bandwidth);
             }
 
-            while (priorityQueue.Count != 0 && visited.Count < this.RouterNumber)
+            while (priorityQueue.Count > 0 && visited.Count < this.RouterNumber)
             {
                   var currentEdge = priorityQueue.Dequeue();
                   if (visited.Contains(currentEdge.SecondVertex))

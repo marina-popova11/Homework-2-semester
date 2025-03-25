@@ -71,8 +71,39 @@ public class TestsNetwork
     }
 
     [Test]
-    public void Test_PrimAlgorithm()
+    public void Test_PrimAlgorithmWithEmptyNet()
     {
-        
+        var net = new Network();
+        var newNet = net.PrimAlgorithm();
+        Assert.That(newNet.Count, Is.EqualTo(0));
+        Assert.That(newNet, Is.Not.Null);
+    }
+
+    [Test]
+    public void Test_PrimAlgorithmWithNotEmptyNet()
+    {
+        var net = new Network();
+        net.AddEdge(1, 2, 8);
+        net.AddEdge(1, 4, 5);
+        net.AddEdge(2, 3, 5);
+        net.AddEdge(2, 4, 2);
+        net.AddEdge(3, 4, 3);
+        var newNet = net.PrimAlgorithm();
+        Assert.That(newNet.Count, Is.EqualTo(3));
+        Assert.That(newNet.Exists(e => (e.FirstVertex == 1 && e.SecondVertex == 2)));
+        Assert.That(newNet.Exists(e => (e.FirstVertex == 2 && e.SecondVertex == 3)));
+        Assert.That(newNet.Exists(e => (e.FirstVertex == 1 && e.SecondVertex == 4)));
+    }
+
+    [Test]
+    public void Test_PrimAlgorithmWithIdenticalEdges()
+    {
+        var net = new Network();
+        net.AddEdge(1, 2, 4);
+        net.AddEdge(2, 1, 5);
+        net.AddEdge(2, 3, 6);
+        var newNet = net.PrimAlgorithm();
+        Assert.That(newNet.Count, Is.EqualTo(2));
+        Assert.That(newNet[0].Bandwidth, Is.EqualTo(5));
     }
 }

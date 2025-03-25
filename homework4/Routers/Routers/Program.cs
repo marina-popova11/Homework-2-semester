@@ -9,6 +9,7 @@ if (filename == null)
 
 var network = ReadFromFile(filename);
 var newNet = network.PrimAlgorithm();
+WriteToFile(newNet);
 
 Network ReadFromFile(string filename)
 {
@@ -32,4 +33,9 @@ Network ReadFromFile(string filename)
       }
 
       return network;
+}
+
+void WriteToFile(List<Edge> network)
+{
+      var file = new FileStream("newFile.txt", FileMode.OpenOrCreate);
 }
