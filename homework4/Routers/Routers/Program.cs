@@ -37,5 +37,14 @@ Network ReadFromFile(string filename)
 
 void WriteToFile(List<Edge> network)
 {
-      var file = new FileStream("newFile.txt", FileMode.OpenOrCreate);
+      var grouped = network.GroupBy(e => e.FirstVertex).OrderBy(g => g.Key);
+      using (var writer = new StreamWriter("newFile.txt"))
+      {
+            foreach (var el in grouped)
+            {
+                  writer.Write($"{el.Key}: ");
+                  var edges = el.Select(e => $"{e.SecondVertex}({e.Bandwidth})");
+                  writer.WriteLine(string.Join(", ", edges));
+            }
+      }
 }
