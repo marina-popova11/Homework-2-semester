@@ -66,7 +66,6 @@ public class Network
       /// <summary>
       /// An algorithm for finding a minimum spanning tree.
       /// </summary>
-      /// <param name="network">Current network.</param>
       /// <returns>A minimal list with maximum bandwidth.</returns>
       public List<Edge> PrimAlgorithm()
       {

@@ -2,9 +2,22 @@
 
 System.Console.WriteLine("Enter the filename: ");
 string? filename = System.Console.ReadLine();
-if (filename == null)
+if (string.IsNullOrWhiteSpace(filename))
 {
       System.Console.WriteLine("File path cannot be null.");
+      return;
+}
+
+if (!File.Exists(filename))
+{
+      System.Console.WriteLine("File not exists, try again.");
+      return;
+}
+
+if (new FileInfo(filename).Length == 0)
+{
+      System.Console.WriteLine("File is empty, try again.");
+      return;
 }
 
 var network = ReadFromFile(filename);
