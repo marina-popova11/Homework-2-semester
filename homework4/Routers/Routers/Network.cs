@@ -64,6 +64,66 @@ public class Network
       }
 
       /// <summary>
+      /// Checking the graph for connectivity.
+      /// </summary>
+      /// <returns>True or false.</returns>
+      public bool IsNetworkConnected()
+      {
+            if (this.RouterNumber == 0 || this.Vertexes.Count == 0)
+            {
+                  return false;
+            }
+
+            var visited = new HashSet<int>();
+            var queue = new Queue<int>();
+            int startVertex = this.Vertexes[0].FirstVertex;
+            visited.Add(startVertex);
+            queue.Enqueue(startVertex);
+            var adjacencyList = new Dictionary<int, List<int>>();
+            foreach (var el in this.Vertexes)
+            {
+                  if (!adjacencyList.ContainsKey(el.FirstVertex))
+                  {
+                        adjacencyList[el.FirstVertex] = new List<int>();
+                  }
+
+                  if (!adjacencyList.ContainsKey(el.SecondVertex))
+                  {
+                        adjacencyList[el.SecondVertex] = new List<int>();
+                  }
+
+                  adjacencyList[el.FirstVertex].Add(el.FirstVertex);
+                  adjacencyList[el.SecondVertex].Add(el.SecondVertex);
+            }
+
+            while (queue.Count > 0)
+            {
+                  var current = queue.Dequeue();
+                  if (adjacencyList.ContainsKey(current))
+                  {
+                        foreach (var neighbor in adjacencyList[current])
+                        {
+                              if (!visited.Contains(neighbor))
+                              {
+                                    visited.Add(neighbor);
+                                    queue.Enqueue(neighbor);
+                              }
+                        }
+                  }
+            }
+
+            for (int i = 0; i < this.RouterNumber; ++i)
+            {
+                  if (!visited.Contains(i))
+                  {
+                        return false;
+                  }
+            }
+
+            return true;
+      }
+
+      /// <summary>
       /// An algorithm for finding a minimum spanning tree.
       /// </summary>
       /// <returns>A minimal list with maximum bandwidth.</returns>

@@ -106,4 +106,15 @@ public class TestsNetwork
         Assert.That(newNet.Count, Is.EqualTo(2));
         Assert.That(newNet[0].Bandwidth, Is.EqualTo(5));
     }
+
+    [Test]
+    public void Test_DisconnectedGraph()
+    {
+        var net = new Network();
+        net.AddEdge(1, 2, 8);
+        net.AddEdge(1, 3, 5);
+        net.AddEdge(2, 3, 5);
+        net.AddEdge(5, 4, 2);
+        Assert.That(net.IsNetworkConnected(), Is.False);
+    }
 }

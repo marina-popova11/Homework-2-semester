@@ -1,28 +1,41 @@
 ﻿using Routers;
 
-System.Console.WriteLine("Enter the filename: ");
-string? filename = System.Console.ReadLine();
-if (string.IsNullOrWhiteSpace(filename))
+if (args.Length < 2)
+{
+      System.Console.WriteLine("Enter <input_file> <output_file>");
+      return;
+}
+
+string inputFileName = args[0];
+string outputFileName = args[1];
+
+if (string.IsNullOrWhiteSpace(inputFileName))
 {
       System.Console.WriteLine("File path cannot be null.");
       return;
 }
 
-if (!File.Exists(filename))
+if (!File.Exists(inputFileName))
 {
       System.Console.WriteLine("File not exists, try again.");
       return;
 }
 
-if (new FileInfo(filename).Length == 0)
+if (new FileInfo(inputFileName).Length == 0)
 {
       System.Console.WriteLine("File is empty, try again.");
       return;
 }
 
-var network = ReadFromFile(filename);
+var network = ReadFromFile(inputFileName);
+if (!network.IsNetworkConnected())
+{
+      System.Console.WriteLine("Graph should be connected!");
+      return;
+}
+
 var newNet = network.PrimAlgorithm();
-WriteToFile(newNet);
+WriteToFile(newNet, outputFileName);
 
 Network ReadFromFile(string filename)
 {
@@ -48,10 +61,10 @@ Network ReadFromFile(string filename)
       return network;
 }
 
-void WriteToFile(List<Edge> network)
+void WriteToFile(List<Edge> network, string filename)
 {
       var grouped = network.GroupBy(e => e.FirstVertex).OrderBy(g => g.Key);
-      using (var writer = new StreamWriter("newFile.txt"))
+      using (var writer = new StreamWriter(filename))
       {
             foreach (var el in grouped)
             {
