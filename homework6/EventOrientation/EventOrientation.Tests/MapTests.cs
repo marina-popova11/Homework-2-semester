@@ -2,11 +2,17 @@
 
 public class MapTests
 {
+    private Operations element = new();
+    [SetUp]
+    public void SetUp()
+    {
+        var element = new Operations();
+    }
+
     [Test]
     public void TestMap_ThrowArgumentNullException_ListIsNull()
     {
         List<int>? list = null;
-        var element = new Operations();
         Assert.Throws<ArgumentNullException>(() => element.Map(list, x => x * 2));
     }
 
@@ -14,7 +20,6 @@ public class MapTests
     public void TestMap_ThrowArgumentNullException_FuncIsNull()
     {
         var list = new List<int> {1, 2, 3};
-        var element = new Operations();
         Assert.Throws<ArgumentNullException>(() => element.Map<int, int>(list, null));
     }
 
@@ -22,7 +27,6 @@ public class MapTests
     public void TestMap_WithNormalData()
     {
         var list = new List<int> {1, 2, 3};
-        var element = new Operations();
         Assert.That(element.Map(list, x => x * 2), Is.EqualTo(new List<int> {2, 4, 6}));
     }
 
@@ -30,7 +34,6 @@ public class MapTests
     public void TestMap_FunctionOnMap()
     {
         var list = new List<int> {1, 2};
-        var element = new Operations();
         var objects = new List<(object?, object?)>();
         element.OnMap += (input, output) => objects.Add((input, output));
 

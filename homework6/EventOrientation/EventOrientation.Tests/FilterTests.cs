@@ -2,11 +2,17 @@ namespace EventOrientation.Tests;
 
 public class FilterTests
 {
+    private Operations element = new();
+    [SetUp]
+    public void SetUp()
+    {
+        var element = new Operations();
+    }
+
     [Test]
     public void TestFilter_ThrowArgumentNullException_ListIsNull()
     {
         List<int>? list = null;
-        var element = new Operations();
         Assert.Throws<ArgumentNullException>(() => element.Filter(list, x => x % 2 == 0));
     }
 
@@ -14,7 +20,6 @@ public class FilterTests
     public void TestFilter_ThrowArgumentNullException_FuncIsNull()
     {
         var list = new List<int> {1, 2, 3};
-        var element = new Operations();
         Assert.Throws<ArgumentNullException>(() => element.Filter(list, null));
     }
 
@@ -22,7 +27,6 @@ public class FilterTests
     public void TestFilter_WithNormalData()
     {
         var list = new List<int> {2, 4, 8};
-        var element = new Operations();
         Assert.That(element.Filter(list, x => x % 2 == 0), Is.EqualTo(list));
     }
 
@@ -30,7 +34,6 @@ public class FilterTests
     public void TestFilter_FunctionOnFilter()
     {
         var list = new List<int> {2, 5, 8};
-        var element = new Operations();
         var objects = new List<(object?, bool)>();
         element.OnFilter += (input, isFiltered) => objects.Add((input, isFiltered));
 
