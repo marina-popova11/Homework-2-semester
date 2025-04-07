@@ -31,7 +31,7 @@ public class MapTests
     {
         var list = new List<int> {1, 2};
         var element = new Operations();
-        var objects = new List<(object, object)>();
+        var objects = new List<(object?, object?)>();
         element.OnMap += (input, output) => objects.Add((input, output));
 
         element.Map(list, x => x * 2);

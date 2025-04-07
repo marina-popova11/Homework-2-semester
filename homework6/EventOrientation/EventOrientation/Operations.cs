@@ -29,7 +29,7 @@ public class Operations
     /// <param name="func">The conversion function.</param>
     /// <returns>New list with converted elements.</returns>
     /// <exception cref="ArgumentNullException">Thrown when list or converter is null.</exception>
-    public List<TOutput> Map<TInput, TOutput>(List<TInput>? list, Func<TInput, TOutput> func)
+    public List<TOutput> Map<TInput, TOutput>(List<TInput>? list, Func<TInput, TOutput>? func)
     {
         if (list == null)
         {
@@ -60,7 +60,7 @@ public class Operations
     /// <param name="func">Function that returns a boolean value for a list element.</param>
     /// <returns>Filtered list.</returns>
     /// <exception cref="ArgumentNullException">Thrown when list or predicate is null.</exception>
-    public List<T> Filter<T>(List<T> list, Func<T, bool> func)
+    public List<T> Filter<T>(List<T>? list, Func<T, bool>? func)
     {
         if (list == null)
         {
@@ -97,7 +97,7 @@ public class Operations
     /// <param name="func">The accumulation function.</param>
     /// <returns>The final accumulator value.</returns>
     /// <exception cref="ArgumentNullException">Thrown when list or accumulator is null.</exception>
-    public TAcc Fold<T, TAcc>(List<T> list, TAcc start, Func<TAcc, T, TAcc> func)
+    public TAcc Fold<T, TAcc>(List<T>? list, TAcc start, Func<TAcc, T, TAcc>? func)
     {
         if (list == null)
         {
