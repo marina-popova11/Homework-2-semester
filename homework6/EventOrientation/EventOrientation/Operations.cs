@@ -29,11 +29,11 @@ public class Operations
     /// <param name="func">The conversion function.</param>
     /// <returns>New list with converted elements.</returns>
     /// <exception cref="ArgumentNullException">Thrown when list or converter is null.</exception>
-    public List<TOutput> Map<TInput, TOutput>(List<TInput> list, Func<TInput, TOutput> func)
+    public List<TOutput> Map<TInput, TOutput>(List<TInput>? list, Func<TInput, TOutput> func)
     {
         if (list == null)
         {
-            throw new ArgumentNullException(nameof(list));
+            throw new ArgumentNullException(nameof(func));
         }
 
         if (func == null)
