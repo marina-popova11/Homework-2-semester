@@ -94,12 +94,12 @@ public class Queue
             int rightChildIndex = (2 * index) + 2;
             int largestIndex = index;
 
-            if (leftChildIndex < this.size && this.CompareItems(this.list[leftChildIndex], this.list[rightChildIndex]))
+            if (leftChildIndex < this.size && this.CompareItems(this.list[leftChildIndex], this.list[largestIndex]))
             {
                 largestIndex = leftChildIndex;
             }
 
-            if (rightChildIndex < this.size && this.CompareItems(this.list[rightChildIndex], this.list[leftChildIndex]))
+            if (rightChildIndex < this.size && this.CompareItems(this.list[rightChildIndex], this.list[largestIndex]))
             {
                 largestIndex = rightChildIndex;
             }
