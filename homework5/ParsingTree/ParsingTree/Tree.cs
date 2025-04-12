@@ -5,13 +5,13 @@ namespace ParsingTree;
 /// </summary>
 public class Tree
 {
-      private Node root;
+      private Node? root;
 
       /// <summary>
       /// Initializes a new instance of the <see cref="Tree"/> class.
       /// </summary>
       /// <param name="root">The root node.</param>
-      public Tree(Node root)
+      public Tree(Node? root)
       {
             this.root = root;
       }
@@ -37,6 +37,11 @@ public class Tree
       /// <returns>String.</returns>
       public string Print()
       {
+            if (this.root == null)
+            {
+                  throw new ArgumentNullException();
+            }
+
             return this.root.Print();
       }
 }
