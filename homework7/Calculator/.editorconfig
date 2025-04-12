@@ -1,0 +1,2 @@
+[*.cs]
+csharp_indent_style = block

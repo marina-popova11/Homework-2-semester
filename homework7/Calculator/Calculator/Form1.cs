@@ -7,8 +7,11 @@ public partial class Form1 : Form
         InitializeComponent();
     }
 
-    private void panel1_Paint(object sender, PaintEventArgs e)
+    private void Form1_KeyPress(object sender, KeyPressEventArgs e)
     {
-        throw new System.NotImplementedException();
+        if (e.KeyChar == Convert.ToChar(Keys.Escape))
+        {
+            this.Close();
+        }
     }
 }
