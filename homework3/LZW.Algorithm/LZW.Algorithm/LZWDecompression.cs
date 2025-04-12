@@ -60,12 +60,12 @@ public class LZWDecompression
             {
                   byte firstByte = array[i];
 
-                  if (firstByte < 0x80) // Однобайтовое число
+                  if (firstByte < 0x80)
                   {
                         intList.Add(firstByte);
                         i += 1;
                   }
-                  else if ((firstByte & 0xC0) == 0x80) // Двухбайтовое число
+                  else if ((firstByte & 0xC0) == 0x80)
                   {
                         if (i + 1 >= array.Length)
                         {
@@ -76,7 +76,7 @@ public class LZWDecompression
                         intList.Add(value);
                         i += 2;
                   }
-                  else if ((firstByte & 0xE0) == 0xC0) // Трехбайтовое число
+                  else if ((firstByte & 0xE0) == 0xC0)
                   {
                         if (i + 2 >= array.Length)
                         {

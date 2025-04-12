@@ -1,11 +1,9 @@
-using LZW.Algorithm;
-using NUnit.Framework.Constraints;
-
 namespace LZW.Algorithm.Tests;
 
-public class TestForDecompression
+public class TestDecompress
 {
       private LZWDecompression lzw = new();
+
       [SetUp]
       public void SetUp()
       {
@@ -17,7 +15,7 @@ public class TestForDecompression
       {
             var filePath = Path.GetTempFileName();
             File.WriteAllBytes(filePath, Array.Empty<byte>());
-            var decompressed = lzw.Decompress(filePath);
+            var decompressed = this.lzw.Decompress(filePath);
             Assert.That(decompressed, Is.Empty);
             File.Delete(filePath);
       }
@@ -28,7 +26,7 @@ public class TestForDecompression
             var filePath = Path.GetTempFileName();
             var compressed = new byte[] { 0x41 };
             File.WriteAllBytes(filePath, compressed);
-            var decompressed = lzw.Decompress(filePath);
+            var decompressed = this.lzw.Decompress(filePath);
             Assert.That(decompressed, Is.EqualTo(new byte[] { (byte)'A' }));
             File.Delete(filePath);
       }
@@ -39,7 +37,7 @@ public class TestForDecompression
             var filePath = Path.GetTempFileName();
             var compressed = new byte[] { (byte)'A', (byte)'A', (byte)'A' };
             File.WriteAllBytes(filePath, compressed);
-            var decompressedData = lzw.Decompress(filePath);
+            var decompressedData = this.lzw.Decompress(filePath);
             Assert.That(decompressedData, Is.EqualTo(new byte[] { (byte)'A', (byte)'A', (byte)'A' }));
             File.Delete(filePath);
       }
@@ -48,15 +46,15 @@ public class TestForDecompression
       public void Test_DecompressInvalidByteArrayThrowsException()
       {
             var filePath = Path.GetTempFileName();
-            var compressed = new byte[] {0xC0};
+            var compressed = new byte[] { 0xC0 };
             File.WriteAllBytes(filePath, compressed);
-            Assert.That(() => lzw.Decompress(filePath), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => this.lzw.Decompress(filePath), Throws.TypeOf<InvalidOperationException>());
       }
 
       [Test]
       public void Test_DecompressInvalidFilePathThrowsException()
       {
             var invalidFilePath = "invalid_path.zipped";
-            Assert.That(() => lzw.Decompress(invalidFilePath), Throws.TypeOf<FileNotFoundException>());
+            Assert.That(() => this.lzw.Decompress(invalidFilePath), Throws.TypeOf<FileNotFoundException>());
       }
 }
