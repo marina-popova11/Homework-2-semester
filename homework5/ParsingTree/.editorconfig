@@ -1,0 +1,10 @@
+[*.cs]
+
+# IDE0160: Преобразовать в namespace с заданной областью видимости блока
+dotnet_diagnostic.IDE0160.severity = none
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# CS1591: Отсутствует комментарий XML для открытого видимого типа или члена
+dotnet_diagnostic.CS1591.severity = none
