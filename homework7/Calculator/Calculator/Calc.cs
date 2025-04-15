@@ -56,6 +56,16 @@ public class Calc
     /// <returns>current number vakue.</returns>
     public double OperatorEnter(char character)
     {
+        if (character == '=')
+        {
+            if (this.charOperator != '\0')
+            {
+                this.Calculating();
+            }
+
+            return this.currentValue;
+        }
+
         if (this.charOperator != '\0' && !this.isNewOperation)
         {
             this.Calculating();
@@ -77,18 +87,18 @@ public class Calc
         switch (this.charOperator)
         {
             case '+':
-                this.currentValue += this.accumulator;
+                this.currentValue = this.accumulator + this.currentValue;
                 break;
             case '-':
-                this.currentValue -= this.accumulator;
+                this.currentValue = this.accumulator - this.currentValue;
                 break;
             case '*':
-                this.currentValue *= this.accumulator;
+                this.currentValue = this.accumulator * this.currentValue;
                 break;
             case '/':
                 if (this.currentValue != 0)
                 {
-                    this.currentValue /= this.accumulator;
+                    this.currentValue = this.accumulator / this.currentValue;
                 }
                 else
                 {
