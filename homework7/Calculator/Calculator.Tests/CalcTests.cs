@@ -1,5 +1,8 @@
 ﻿namespace Calculator.Tests;
 
+/// <summary>
+/// Class for Tests.
+/// </summary>
 public class CalcTests
 {
     [Test]
@@ -39,7 +42,7 @@ public class CalcTests
     }
 
     [Test]
-    public void Test_Substraction()
+    public void Test_SubtractionWithNormalData()
     {
         var calculator = new Calc();
         calculator.NumberEnter(1);
