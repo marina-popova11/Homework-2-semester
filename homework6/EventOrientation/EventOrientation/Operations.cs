@@ -6,17 +6,23 @@ namespace EventOrientation;
 public class Operations
 {
     /// <summary>
-    ///  Occurs when an element is mapped during Map operation.
+    /// Occurs when an element is mapped during Map operation.
+    /// First (object?) - the input element before mapping.
+    /// Second (object?) = the result after mapping.
     /// </summary>
     public event Action<object?, object?> OnMap = (_, _) => { };
 
     /// <summary>
     /// Occurs when an element is checked during Filter operation.
+    /// First (object?) - the element that is being checked.
+    /// Second (bool) - the result of whether an item has been filtered or not.
     /// </summary>
     public event Action<object?, bool> OnFilter = (_, _) => { };
 
     /// <summary>
     /// Occurs when an element is processed during Fold operation.
+    /// First (object?) - the element that is being processed.
+    /// Second (object?) - the accumulator value after processing this element.
     /// </summary>
     public event Action<object?, object?> OnFold = (_, _) => { };
 
