@@ -26,6 +26,13 @@ public class FilterTests
     }
 
     [Test]
+    public void TestFilter_WithDifferentNormalData()
+    {
+        var list = new List<int> { 12, 13, 6, 8, 3, 1 };
+        Assert.That(this.element.Filter(list, x => x % 3 == 0), Is.EqualTo(new List<int> { 12, 6, 3 }));
+    }
+
+    [Test]
     public void TestFilter_FunctionOnFilter()
     {
         var list = new List<int> { 2, 5, 8 };
