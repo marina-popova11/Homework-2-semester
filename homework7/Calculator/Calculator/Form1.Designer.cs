@@ -48,7 +48,9 @@ partial class Form1
         button14 = new Button();
         button15 = new Button();
         button16 = new Button();
+        panel2 = new Panel();
         ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+        panel2.SuspendLayout();
         SuspendLayout();
         // 
         // pictureBox1
@@ -69,7 +71,7 @@ partial class Form1
         button1.ForeColor = Color.Transparent;
         button1.Location = new Point(86, 307);
         button1.Name = "button1";
-        button1.Size = new Size(47, 37);
+        button1.Size = new Size(44, 37);
         button1.TabIndex = 4;
         button1.Text = "0";
         button1.UseVisualStyleBackColor = false;
@@ -97,7 +99,7 @@ partial class Form1
         button3.ForeColor = Color.Transparent;
         button3.Location = new Point(86, 256);
         button3.Name = "button3";
-        button3.Size = new Size(46, 37);
+        button3.Size = new Size(44, 37);
         button3.TabIndex = 6;
         button3.Text = "2";
         button3.UseVisualStyleBackColor = false;
@@ -139,7 +141,7 @@ partial class Form1
         button6.ForeColor = Color.Transparent;
         button6.Location = new Point(86, 204);
         button6.Name = "button6";
-        button6.Size = new Size(46, 37);
+        button6.Size = new Size(44, 37);
         button6.TabIndex = 9;
         button6.Text = "5";
         button6.UseVisualStyleBackColor = false;
@@ -153,7 +155,7 @@ partial class Form1
         button7.ForeColor = Color.Transparent;
         button7.Location = new Point(144, 204);
         button7.Name = "button7";
-        button7.Size = new Size(46, 37);
+        button7.Size = new Size(44, 37);
         button7.TabIndex = 10;
         button7.Text = "6";
         button7.UseVisualStyleBackColor = false;
@@ -181,7 +183,7 @@ partial class Form1
         button9.ForeColor = Color.Transparent;
         button9.Location = new Point(86, 154);
         button9.Name = "button9";
-        button9.Size = new Size(46, 37);
+        button9.Size = new Size(44, 37);
         button9.TabIndex = 12;
         button9.Text = "8";
         button9.UseVisualStyleBackColor = false;
@@ -195,7 +197,7 @@ partial class Form1
         button10.ForeColor = Color.Transparent;
         button10.Location = new Point(144, 154);
         button10.Name = "button10";
-        button10.Size = new Size(46, 37);
+        button10.Size = new Size(44, 37);
         button10.TabIndex = 13;
         button10.Text = "9";
         button10.UseVisualStyleBackColor = false;
@@ -217,12 +219,12 @@ partial class Form1
         // 
         // label1
         // 
-        label1.AutoSize = true;
-        label1.BackColor = Color.LightCyan;
+        label1.BackColor = Color.Transparent;
         label1.Font = new Font("Stencil", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        label1.Location = new Point(195, 65);
+        label1.Location = new Point(-4, 23);
         label1.Margin = new Padding(3);
         label1.Name = "label1";
+        label1.RightToLeft = RightToLeft.Yes;
         label1.Size = new Size(113, 33);
         label1.TabIndex = 15;
         label1.Text = "label1";
@@ -298,6 +300,15 @@ partial class Form1
         button16.UseVisualStyleBackColor = false;
         button16.Click += Button16_Click;
         // 
+        // panel2
+        // 
+        panel2.BackgroundImage = (Image)resources.GetObject("panel2.BackgroundImage");
+        panel2.Controls.Add(label1);
+        panel2.Location = new Point(24, 39);
+        panel2.Name = "panel2";
+        panel2.Size = new Size(233, 76);
+        panel2.TabIndex = 21;
+        // 
         // Form1
         // 
         AutoScaleDimensions = new SizeF(120F, 120F);
@@ -305,12 +316,12 @@ partial class Form1
         AutoSizeMode = AutoSizeMode.GrowAndShrink;
         BackColor = SystemColors.Control;
         ClientSize = new Size(282, 403);
+        Controls.Add(panel2);
         Controls.Add(button16);
         Controls.Add(button15);
         Controls.Add(button14);
         Controls.Add(button13);
         Controls.Add(button12);
-        Controls.Add(label1);
         Controls.Add(button11);
         Controls.Add(button10);
         Controls.Add(button9);
@@ -327,9 +338,11 @@ partial class Form1
         ForeColor = Color.Black;
         Name = "Form1";
         ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+        panel2.ResumeLayout(false);
         ResumeLayout(false);
-        PerformLayout();
     }
+
+    private System.Windows.Forms.Panel panel1;
 
     private System.Windows.Forms.Button button1;
 
@@ -353,4 +366,5 @@ partial class Form1
     private Button button14;
     private Button button15;
     private Button button16;
+    private Panel panel2;
 }
