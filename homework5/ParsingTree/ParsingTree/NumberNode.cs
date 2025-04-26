@@ -1,3 +1,7 @@
+// <copyright file="NumberNode.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace ParsingTree;
 
 /// <summary>

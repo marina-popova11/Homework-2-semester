@@ -1,3 +1,7 @@
+// <copyright file="Node.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace ParsingTree;
 
 /// <summary>
