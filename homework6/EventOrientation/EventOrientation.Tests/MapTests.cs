@@ -1,4 +1,8 @@
-﻿namespace EventOrientation.Tests;
+﻿// <copyright file="MapTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace EventOrientation.Tests;
 
 public class MapTests
 {

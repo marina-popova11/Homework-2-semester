@@ -1,3 +1,7 @@
+// <copyright file="FoldTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace EventOrientation.Tests;
 
 public class FoldTests
