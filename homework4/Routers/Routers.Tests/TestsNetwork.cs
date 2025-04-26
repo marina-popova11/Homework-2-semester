@@ -4,13 +4,6 @@ namespace Routers.Tests;
 
 public class TestsNetwork
 {
-    // private Network net = new();
-    // [SetUp]
-    // public void Setup()
-    // {
-    //     var net = new Network();
-    // }
-
     [Test]
     public void Test_AddEdgeWithNormalData()
     {

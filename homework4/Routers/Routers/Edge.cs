@@ -1,3 +1,7 @@
+// <copyright file="Edge.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Routers;
 
 /// <summary>
