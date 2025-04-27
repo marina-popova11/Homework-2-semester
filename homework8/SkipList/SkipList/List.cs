@@ -13,6 +13,8 @@ public class List<T> : IList<T>
 {
     private const double probability = 0.5;
 
+    private readonly Random rand = new Random();
+
     private HeaderNode<T> header;
 
     private int size;
@@ -26,20 +28,91 @@ public class List<T> : IList<T>
         this.size = 0;
     }
 
-    public T this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    /// <summary>
+    /// Allows you to access the list items by index.
+    /// </summary>
+    /// <param name="index">The current index.</param>
+    /// <returns>the value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
+    /// <exception cref="NotSupportedException">Not supported exception.</exception>
+    public T this[int index]
+    {
+        get
+        {
+            if (index < 0 || index >= this.size)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            var node = this.header.GetNext(0);
+            for (int i = 0; i < index; ++i)
+            {
+                node = node.GetNext(0);
+            }
+
+            return node.Value;
+        }
+
+        set => throw new NotSupportedException("Set by index is not supported in SkipList.");
+    }
 
     public int Count => throw new NotImplementedException();
 
     public bool IsReadOnly => throw new NotImplementedException();
 
-    public void Add(T item)
+    /// <summary>
+    /// The function to add new node in skip list.
+    /// </summary>
+    /// <param name="key">The new node`s key.</param>
+    /// <param name="item">The new node`s value.</param>
+    public void Add(int key, T item)
     {
-        throw new NotImplementedException();
+        var node = this.FindNode(key);
+        if (node.Key != 0 && node.Key == key)
+        {
+            node.SetValue(item);
+            return;
+        }
+
+        int newHeight = this.GetRandomHeight();
+        var newNode = new Node<T>(item, key, newHeight);
+        var update = new Node<T>[Math.Max(newHeight, this.header.Height)];
+        var current = this.header;
+        for (int i = this.header.Height - 1; i >= 0; --i)
+        {
+            while (current.GetNext(i) != null && current.GetNext(i).Key < key)
+            {
+                current = (HeaderNode<T>)current.GetNext(i);
+            }
+
+            if (i < newHeight)
+            {
+                update[i] = current;
+            }
+        }
+
+        for (int i = 0; i < newHeight; ++i)
+        {
+            newNode.Next[i] = update[i].GetNext(i);
+            update[i].Next[i] = newNode;
+        }
+
+        if (newHeight > this.header.Height)
+        {
+            this.header.Next = new Node<T>[newHeight];
+            Array.Copy(update, this.header.Next, update.Length);
+        }
+
+        ++this.size;
     }
 
+    /// <summary>
+    /// The function to clear the skip list.
+    /// </summary>
     public void Clear()
     {
-        throw new NotImplementedException();
+        this.header = new HeaderNode<T>(1);
+        this.size = 0;
     }
 
     public bool Contains(T item)
@@ -67,7 +140,7 @@ public class List<T> : IList<T>
         throw new NotImplementedException();
     }
 
-    public bool Remove(T item)
+    public bool Remove(int key)
     {
         throw new NotImplementedException();
     }
@@ -75,6 +148,47 @@ public class List<T> : IList<T>
     public void RemoveAt(int index)
     {
         throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// The function to find node by it`s key.
+    /// </summary>
+    /// <param name="key">The node`s key.</param>
+    /// <returns>The found node.</returns>
+    public Node<T> FindNode(int key)
+    {
+        Node<T> node = this.header;
+        int currentLevel = node.Height - 1;
+        Node<T> next;
+        while (true)
+        {
+            next = node.GetNext(currentLevel);
+            while (next != null && next.Key <= key)
+            {
+                node = next;
+                next = node.GetNext(currentLevel);
+            }
+
+            if (node.Key == key)
+            {
+                return node;
+            }
+
+            --currentLevel;
+        }
+
+        return node;
+    }
+
+    private int GetRandomHeight()
+    {
+        int height = 1;
+        while (this.rand.NextDouble() < probability && height < 32)
+        {
+            ++height;
+        }
+
+        return height;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
