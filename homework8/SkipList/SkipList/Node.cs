@@ -45,13 +45,6 @@ public class Node<T>
     public int Height => this.Next.Length;
 
     /// <summary>
-    /// Returns next node at the lowest level.
-    /// </summary>
-    /// <returns>Next node.</returns>
-    public Node<T> GetNext()
-        => this.Next[0];
-
-    /// <summary>
     /// Returns next node at the specified level.
     /// </summary>
     /// <param name="level">Level.</param>

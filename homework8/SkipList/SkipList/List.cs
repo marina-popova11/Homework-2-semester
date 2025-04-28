@@ -135,19 +135,94 @@ public class List<T> : IList<T>
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// .
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="item"></param>
+    /// <exception cref="NotImplementedException"></exception>
     public void Insert(int index, T item)
-    {
-        throw new NotImplementedException();
-    }
+        => throw new NotImplementedException();
 
+    /// <summary>
+    /// The function to remove the node by it`s key.
+    /// </summary>
+    /// <param name="key">The key.</param>
+    /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
     public bool Remove(int key)
     {
-        throw new NotImplementedException();
+        Node<T> nodeToRemove = this.FindNode(key);
+        if (nodeToRemove == null || nodeToRemove.Key != key)
+        {
+            return false;
+        }
+
+        return this.Remove(nodeToRemove);
     }
 
+    /// <summary>
+    /// The function to remove the node.
+    /// </summary>
+    /// <param name="node">The found node.</param>
+    /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
+    public bool Remove(Node<T> node)
+    {
+        if (node == null || node.Key == 0)
+        {
+            return false;
+        }
+
+        var update = new Node<T>[this.header.Height];
+        var current = this.header;
+        for (int i = this.header.Height - 1; i >= 0; --i)
+        {
+            while (current.GetNext(i) != null && current.GetNext(i).Key < node.Key)
+            {
+                current = (HeaderNode<T>)current.GetNext(i);
+            }
+
+            update[i] = current;
+        }
+
+        for (int i = 0; i <= node.Height; ++i)
+        {
+            if (update[i].GetNext(i) == node)
+            {
+                update[i].Next[i] = node.GetNext(i);
+            }
+        }
+
+        while (this.header.Height > 1 && this.header.GetNext(this.header.Height - 1) == null)
+        {
+            var newNext = new Node<T>[this.header.Height - 1];
+            Array.Copy(this.header.Next, newNext, newNext.Length);
+            this.header.Next = newNext;
+        }
+
+        --this.size;
+        return true;
+    }
+
+    /// <summary>
+    /// Finds a node by index (works only at the lower level).
+    /// Calls Remove(Node) for the found node.
+    /// </summary>
+    /// <param name="index">the index.</param>
+    /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
     public void RemoveAt(int index)
     {
-        throw new NotImplementedException();
+        if (index < 0 || index >= this.size)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        var node = this.header.GetNext(0);
+        for (int i = 0; i < index; ++i)
+        {
+            node = node.GetNext(0);
+        }
+
+        this.Remove(node);
     }
 
     /// <summary>
@@ -160,7 +235,7 @@ public class List<T> : IList<T>
         Node<T> node = this.header;
         int currentLevel = node.Height - 1;
         Node<T> next;
-        while (true)
+        while (currentLevel >= 0)
         {
             next = node.GetNext(currentLevel);
             while (next != null && next.Key <= key)
