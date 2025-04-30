@@ -11,6 +11,12 @@ namespace SkipList;
 public class HeaderNode<T> : Node<T>
     where T : IComparable<T>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HeaderNode{T}"/> class.
+    /// </summary>
+    /// <param name="height">The height the header node.</param>
     public HeaderNode(int height)
-        : base(default, height) { }
+        : base(default, int.MinValue, height)
+        {
+        }
 }

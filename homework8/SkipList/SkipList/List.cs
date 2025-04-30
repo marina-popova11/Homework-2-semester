@@ -2,6 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using System.Collections;
+
 namespace SkipList;
 
 /// <summary>
@@ -11,7 +13,7 @@ namespace SkipList;
 public class List<T> : IList<T>
     where T : IComparable<T>
 {
-    private const double probability = 0.5;
+    private const double Probability = 0.5;
 
     private readonly Random rand = new Random();
 
@@ -27,6 +29,16 @@ public class List<T> : IList<T>
         this.header = new HeaderNode<T>(1);
         this.size = 0;
     }
+
+    /// <summary>
+    /// Gets the number of element in skipList.
+    /// </summary>
+    public int Count => this.size;
+
+    /// <summary>
+    /// Gets a value indicating whether the skipList is readonly.
+    /// </summary>
+    public bool IsReadOnly => false;
 
     /// <summary>
     /// Allows you to access the list items by index.
@@ -56,9 +68,14 @@ public class List<T> : IList<T>
         set => throw new NotSupportedException("Set by index is not supported in SkipList.");
     }
 
-    public int Count => throw new NotImplementedException();
-
-    public bool IsReadOnly => throw new NotImplementedException();
+    /// <summary>
+    /// Adds an item to the skipList.
+    /// </summary>
+    /// <param name="item">The object to add.</param>
+    public void Add(T item)
+    {
+        this.Add(item.GetHashCode(), item);
+    }
 
     /// <summary>
     /// The function to add new node in skip list.
@@ -115,34 +132,94 @@ public class List<T> : IList<T>
         this.size = 0;
     }
 
+    /// <summary>
+    /// Determines whether the skipList contains a specific value.
+    /// </summary>
+    /// <param name="item">The object to locate in skipList.</param>
+    /// <returns>True or false depending on whether the node has been found or not.</returns>
     public bool Contains(T item)
     {
-        throw new NotImplementedException();
-    }
-
-    public void CopyTo(T[] array, int arrayIndex)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerator<T> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
-
-    public int IndexOf(T item)
-    {
-        throw new NotImplementedException();
+        return this.IndexOf(item) >= 0;
     }
 
     /// <summary>
-    /// .
+    /// Copies the elements of the SkipList to an Array, starting at a particular Array index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="item"></param>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <param name="array">The array to which the elements from the skipList are copied.</param>
+    /// <param name="arrayIndex">Initial index.</param>
+    /// <exception cref="ArgumentNullException">If array is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
+    /// <exception cref="ArgumentException">If array is not large enough.</exception>
+    public void CopyTo(T[] array, int arrayIndex)
+    {
+        if (array == null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        if (arrayIndex < 0)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        if (array.Length - arrayIndex < this.size)
+        {
+            throw new ArgumentException();
+        }
+    }
+
+    /// <summary>
+    /// Determines the index of a specific item in the skipList.
+    /// </summary>
+    /// <param name="item">The object to locate in skipList.</param>
+    /// <returns>The index of item if found in the list or -1.</returns>
+    public int IndexOf(T item)
+    {
+        int index = 0;
+        var current = this.header.GetNext(0);
+        while (current != null)
+        {
+            if (current.Value.CompareTo(item) == 0)
+            {
+                return index;
+            }
+
+            current = current.GetNext(0);
+            ++index;
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Insert an item to skipList at the specified index.
+    /// </summary>
+    /// <param name="index">Initial index.</param>
+    /// <param name="item">The object to insert into skipList.</param>
+    /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
     public void Insert(int index, T item)
-        => throw new NotImplementedException();
+    {
+        if (index < 0 || index > this.size)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+
+        List<T> tempList = new List<T>();
+        var current = this.header.GetNext(0);
+        while (current != null)
+        {
+            tempList.Add(current.Value);
+            current = current.GetNext(0);
+        }
+
+        tempList.Insert(index, item);
+
+        this.Clear();
+        foreach (var value in tempList)
+        {
+            this.Add(value);
+        }
+    }
 
     /// <summary>
     /// The function to remove the node by it`s key.
@@ -226,6 +303,27 @@ public class List<T> : IList<T>
     }
 
     /// <summary>
+    /// The function to remove the item.
+    /// </summary>
+    /// <param name="item">The object to removing.</param>
+    /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
+    public bool Remove(T item)
+    {
+        var current = this.header.GetNext(0);
+        while (current != null)
+        {
+            if (current.Value.CompareTo(item) == 0)
+            {
+                return this.Remove(current.Key);
+            }
+
+            current = current.GetNext(0);
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// The function to find node by it`s key.
     /// </summary>
     /// <param name="key">The node`s key.</param>
@@ -255,24 +353,37 @@ public class List<T> : IList<T>
         return node;
     }
 
+    /// <summary>
+    /// Returns an enumerator that iterates through the skipList.
+    /// </summary>
+    /// <returns>An Enumerator{T} that can be used to iterate through the collection.</returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        var current = this.header.GetNext(0);
+        while (current != null)
+        {
+            yield return current.Value;
+            current = current.GetNext(0);
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the skipList.
+    /// </summary>
+    /// <returns>Returns GetEnumerator{T}.</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.GetEnumerator();
+    }
+
     private int GetRandomHeight()
     {
         int height = 1;
-        while (this.rand.NextDouble() < probability && height < 32)
+        while (this.rand.NextDouble() < Probability && height < 32)
         {
             ++height;
         }
 
         return height;
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }
