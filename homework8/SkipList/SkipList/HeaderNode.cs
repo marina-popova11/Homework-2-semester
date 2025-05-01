@@ -16,7 +16,22 @@ public class HeaderNode<T> : Node<T>
     /// </summary>
     /// <param name="height">The height the header node.</param>
     public HeaderNode(int height)
-        : base(default, int.MinValue, height)
+        : base(default, height)
         {
         }
+
+    /// <summary>
+    /// Returns next node at the specified level.
+    /// </summary>
+    /// <param name="level">level.</param>
+    /// <returns>Next node.</returns>
+    public override Node<T> GetNext(int level)
+    {
+        if (level < 0 || level >= this.Next.Length)
+        {
+            return null;
+        }
+
+        return this.Next[level];
+    }
 }

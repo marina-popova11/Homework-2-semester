@@ -15,12 +15,10 @@ public class Node<T>
     /// Initializes a new instance of the <see cref="Node{T}"/> class.
     /// </summary>
     /// <param name="value">The value.</param>
-    /// <param name="key">The key.</param>
     /// <param name="height">The height.</param>
-    public Node(T value, int key, int height)
+    public Node(T value, int height)
     {
         this.Value = value;
-        this.Key = key;
         this.Next = new Node<T>[height];
     }
 
@@ -28,11 +26,6 @@ public class Node<T>
     /// Gets or sets the node`s value.
     /// </summary>
     public T Value { get; set; }
-
-    /// <summary>
-    /// Gets the node`s key.
-    /// </summary>
-    public int Key { get; }
 
     /// <summary>
     /// Gets or sets the node`next elements.
@@ -49,8 +42,15 @@ public class Node<T>
     /// </summary>
     /// <param name="level">Level.</param>
     /// <returns>Next node.</returns>
-    public Node<T> GetNext(int level)
-        => this.Next[level];
+    public virtual Node<T> GetNext(int level)
+    {
+        if (level < 0 || level >= this.Next.Length)
+        {
+            return null;
+        }
+
+        return this.Next[level];
+    }
 
     /// <summary>
     /// Sets the node`s value.

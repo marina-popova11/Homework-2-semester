@@ -2,9 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System.Collections;
-
 namespace SkipList;
+
+using System.Collections;
 
 /// <summary>
 /// This skipList.
@@ -74,61 +74,57 @@ public class List<T> : IList<T>
     /// <param name="item">The object to add.</param>
     public void Add(T item)
     {
-        this.Add(item.GetHashCode(), item);
+        var index = this.GetIndexByValue(item);
+        this.Insert(index, item);
     }
 
-    /// <summary>
-    /// The function to add new node in skip list.
-    /// </summary>
-    /// <param name="key">The new node`s key.</param>
-    /// <param name="item">The new node`s value.</param>
-    public void Add(int key, T item)
-    {
-        var node = this.FindNode(key);
-        if (node.Key != 0 && node.Key == key)
-        {
-            node.SetValue(item);
-            return;
-        }
-
-        int newHeight = this.GetRandomHeight();
-        var newNode = new Node<T>(item, key, newHeight);
-        var update = new Node<T>[Math.Max(newHeight, this.header.Height)];
-        var current = this.header;
-        for (int i = this.header.Height - 1; i >= 0; --i)
-        {
-            while (current.GetNext(i) != null && current.GetNext(i).Key < key)
-            {
-                current = (HeaderNode<T>)current.GetNext(i);
-            }
-
-            if (i < newHeight)
-            {
-                update[i] = current;
-            }
-        }
-
-        for (int i = 0; i < newHeight; ++i)
-        {
-            newNode.Next[i] = update[i].GetNext(i);
-            update[i].Next[i] = newNode;
-        }
-
-        if (newHeight > this.header.Height)
-        {
-            this.header.Next = new Node<T>[newHeight];
-            Array.Copy(update, this.header.Next, update.Length);
-        }
-
-        ++this.size;
-    }
+    // /// <summary>
+    // /// The function to add new node in skip list.
+    // /// </summary>
+    // /// <param name="key">The new node`s key.</param>
+    // /// <param name="item">The new node`s value.</param>
+    // public void Add(int key, T item)
+    // {
+    //     var node = this.FindNode(key);
+    //     if (node.Key != 0 && node.Key == key)
+    //     {
+    //         node.SetValue(item);
+    //         return;
+    //     }
+    //     int newHeight = this.GetRandomHeight();
+    //     var newNode = new Node<T>(item, newHeight);
+    //     var update = new Node<T>[Math.Max(newHeight, this.header.Height)];
+    //     var current = this.header;
+    //     for (int i = this.header.Height - 1; i >= 0; --i)
+    //     {
+    //         while (current.GetNext(i) != null && (index > 0 || current.GetNext(i).Value.CompareTo(item) < 0))
+    //         {
+    //             current = (HeaderNode<T>)current.GetNext(i);
+    //         }
+    //         if (i < newHeight)
+    //         {
+    //             update[i] = current;
+    //         }
+    //     }
+    //     for (int i = 0; i < newHeight; ++i)
+    //     {
+    //         newNode.Next[i] = update[i].GetNext(i);
+    //         update[i].Next[i] = newNode;
+    //     }
+    //     if (newHeight > this.header.Height)
+    //     {
+    //         this.header.Next = new Node<T>[newHeight];
+    //         Array.Copy(update, this.header.Next, update.Length);
+    //     }
+    //     ++this.size;
+    // }
 
     /// <summary>
     /// The function to clear the skip list.
     /// </summary>
     public void Clear()
     {
-        this.header = new HeaderNode<T>(1);
+        this.header = new HeaderNode<T>(this.header.Height);
         this.size = 0;
     }
 
@@ -166,6 +162,15 @@ public class List<T> : IList<T>
         {
             throw new ArgumentException();
         }
+
+        var current = this.header.GetNext(0);
+        int index = arrayIndex;
+        while (current != null)
+        {
+            array[index] = current.Value;
+            ++index;
+            current = current.GetNext(0);
+        }
     }
 
     /// <summary>
@@ -183,6 +188,10 @@ public class List<T> : IList<T>
             {
                 return index;
             }
+            else if (current.Value.CompareTo(item) > 0)
+            {
+                break;
+            }
 
             current = current.GetNext(0);
             ++index;
@@ -199,43 +208,58 @@ public class List<T> : IList<T>
     /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
     public void Insert(int index, T item)
     {
-        if (index < 0 || index > this.size)
+        if (index < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        List<T> tempList = new List<T>();
-        var current = this.header.GetNext(0);
-        while (current != null)
+        int newHeight = this.GetRandomHeight();
+        var newNode = new Node<T>(item, newHeight);
+        var update = new Node<T>[Math.Max(this.header.Height, newHeight)];
+        var current = (Node<T>)this.header;
+        for (int i = this.header.Height - 1; i >= 0; --i)
         {
-            tempList.Add(current.Value);
-            current = current.GetNext(0);
+            while (current.GetNext(i) != null && index > 0)
+            {
+                if (current.GetNext(i) != null)
+                {
+                    --index;
+                    current = current.GetNext(i);
+                }
+            }
+
+            update[i] = current;
         }
 
-        tempList.Insert(index, item);
-
-        this.Clear();
-        foreach (var value in tempList)
+        for (int i = 0; i < newHeight; ++i)
         {
-            this.Add(value);
+            newNode.Next[i] = update[i].GetNext(i);
+            update[i].Next[i] = newNode;
         }
+
+        if (newHeight > this.header.Next.Length)
+        {
+            this.header.Next = new Node<T>[newHeight];
+            Array.Copy(update, this.header.Next, update.Length);
+        }
+
+        ++this.size;
     }
 
-    /// <summary>
-    /// The function to remove the node by it`s key.
-    /// </summary>
-    /// <param name="key">The key.</param>
-    /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
-    public bool Remove(int key)
-    {
-        Node<T> nodeToRemove = this.FindNode(key);
-        if (nodeToRemove == null || nodeToRemove.Key != key)
-        {
-            return false;
-        }
-
-        return this.Remove(nodeToRemove);
-    }
+    // /// <summary>
+    // /// The function to remove the node by it`s key.
+    // /// </summary>
+    // /// <param name="key">The key.</param>
+    // /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
+    // public bool Remove(int key)
+    // {
+    //     Node<T> nodeToRemove = this.FindNode(key);
+    //     if (nodeToRemove == null || nodeToRemove.Key != key)
+    //     {
+    //         return false;
+    //     }
+    //     return this.Remove(nodeToRemove);
+    // }
 
     /// <summary>
     /// The function to remove the node.
@@ -244,18 +268,18 @@ public class List<T> : IList<T>
     /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
     public bool Remove(Node<T> node)
     {
-        if (node == null || node.Key == 0)
+        if (node == null)
         {
             return false;
         }
 
         var update = new Node<T>[this.header.Height];
-        var current = this.header;
+        var current = (Node<T>)this.header;
         for (int i = this.header.Height - 1; i >= 0; --i)
         {
-            while (current.GetNext(i) != null && current.GetNext(i).Key < node.Key)
+            while (current.GetNext(i) != null && current.GetNext(i).Value.CompareTo(node.Value) < 0)
             {
-                current = (HeaderNode<T>)current.GetNext(i);
+                current = current.GetNext(i);
             }
 
             update[i] = current;
@@ -309,48 +333,29 @@ public class List<T> : IList<T>
     /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
     public bool Remove(T item)
     {
-        var current = this.header.GetNext(0);
-        while (current != null)
-        {
-            if (current.Value.CompareTo(item) == 0)
-            {
-                return this.Remove(current.Key);
-            }
-
-            current = current.GetNext(0);
-        }
-
-        return false;
+        var node = this.FindNode(item);
+        return node != null ? this.Remove(node) : false;
     }
 
     /// <summary>
     /// The function to find node by it`s key.
     /// </summary>
-    /// <param name="key">The node`s key.</param>
+    /// <param name="value">The node`s value.</param>
     /// <returns>The found node.</returns>
-    public Node<T> FindNode(int key)
+    public Node<T>? FindNode(T value)
     {
-        Node<T> node = this.header;
+        var node = this.header;
         int currentLevel = node.Height - 1;
-        Node<T> next;
-        while (currentLevel >= 0)
+        for (int i = this.header.Height - 1; i >= 0; --i)
         {
-            next = node.GetNext(currentLevel);
-            while (next != null && next.Key <= key)
+            while (node.GetNext(i) != null && node.GetNext(i).Value.CompareTo(value) < 0)
             {
-                node = next;
-                next = node.GetNext(currentLevel);
+                node = (HeaderNode<T>)node.GetNext(i);
             }
-
-            if (node.Key == key)
-            {
-                return node;
-            }
-
-            --currentLevel;
         }
 
-        return node;
+        var current = node.GetNext(0);
+        return current != null && current.Value.CompareTo(value) == 0 ? current : null;
     }
 
     /// <summary>
@@ -372,18 +377,34 @@ public class List<T> : IList<T>
     /// </summary>
     /// <returns>Returns GetEnumerator{T}.</returns>
     IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this.GetEnumerator();
-    }
+        => this.GetEnumerator();
 
     private int GetRandomHeight()
     {
         int height = 1;
-        while (this.rand.NextDouble() < Probability && height < 32)
+        while (this.rand.NextDouble() < Probability && height < 16)
         {
             ++height;
         }
 
         return height;
+    }
+
+    private int GetIndexByValue(T value)
+    {
+        if (typeof(T) == typeof(int))
+        {
+            return (int)(object)value;
+        }
+
+        var current = this.header.GetNext(0);
+        int index = 0;
+        while (current != null && current.Value.CompareTo(value) < 0)
+        {
+            current = current.GetNext(0);
+            ++index;
+        }
+
+        return index;
     }
 }
