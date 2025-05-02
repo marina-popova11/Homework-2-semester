@@ -32,13 +32,13 @@ public class SkipListTests
         Assert.That(list.Contains(2), Is.True);
     }
 
-    // [Test]
-    // public void Test_AddAndExist_ReturnFalse()
-    // {
-    //     var list = new List<int>();
-    //     list.Add(1);
-    //     list.Add(2);
-    //     Assert.That(list.Contains(5), Is.False);
-    //     list.Clear();
-    // }
+    [Test]
+    public void Test_AddAndExist_ReturnFalse()
+    {
+        var list = new List<int>();
+        list.Add(1);
+        list.Add(2);
+        Assert.That(list.Contains(5), Is.False);
+        list.Clear();
+    }
 }
