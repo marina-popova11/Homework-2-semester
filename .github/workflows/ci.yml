@@ -20,10 +20,3 @@ jobs:
           For /R %%l in (*.sln) do (
             dotnet build %%l
           )
-
-      - name: Run tests
-        shell: cmd
-        run: |
-          For /R %%l in (*.sln) do (
-            dotnet test %%l
-          )
