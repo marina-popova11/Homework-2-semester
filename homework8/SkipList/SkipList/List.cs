@@ -215,9 +215,9 @@ public class List<T> : IList<T>
 
         int newHeight = this.GetRandomHeight();
         var newNode = new Node<T>(item, newHeight);
-        var update = new Node<T>[Math.Max(this.header.Height, newHeight)];
+        var update = new Node<T>[newHeight];
         var current = (Node<T>)this.header;
-        for (int i = this.header.Height - 1; i >= 0; --i)
+        for (int i = Math.Min(this.header.Height - 1, newHeight - 1); i >= 0; --i)
         {
             while (current.GetNext(i) != null && index > 0)
             {
@@ -231,16 +231,40 @@ public class List<T> : IList<T>
             update[i] = current;
         }
 
+        for (int i = this.header.Height; i < newHeight; ++i)
+        {
+            update[i] = this.header;
+        }
+
         for (int i = 0; i < newHeight; ++i)
         {
-            newNode.Next[i] = update[i].GetNext(i);
-            update[i].Next[i] = newNode;
+            if (i < update.Length && update[i] != null)
+            {
+                if (i >= update[i].Next.Length)
+                {
+                    var newNext = new Node<T>[i + 1];
+                    Array.Copy(update[i].Next, newNext, update[i].Next.Length);
+                    update[i].Next = newNext;
+                }
+
+                newNode.Next[i] = update[i].GetNext(i);
+                update[i].Next[i] = newNode;
+            }
         }
 
         if (newHeight > this.header.Next.Length)
         {
-            this.header.Next = new Node<T>[newHeight];
-            Array.Copy(update, this.header.Next, update.Length);
+            var newNext = new Node<T>[newHeight];
+            Array.Copy(this.header.Next, newNext, this.header.Next.Length);
+
+            // this.header.Next = new Node<T>[newHeight];
+            // Array.Copy(update, this.header.Next, update.Length);
+            for (int i = this.header.Height; i < newHeight; ++i)
+            {
+                newNext[i] = newNode;
+            }
+
+            this.header.Next = newNext;
         }
 
         ++this.size;
