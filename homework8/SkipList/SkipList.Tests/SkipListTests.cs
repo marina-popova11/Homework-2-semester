@@ -67,4 +67,24 @@ public class SkipListTests
         Assert.That(list[1], Is.EqualTo(3));
         Assert.That(list[0], Is.EqualTo(1));
     }
+
+    [Test]
+    public void Test_FindNode_ReturnCorrect()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(3);
+        list.Add(5);
+        Assert.That(list.FindNode(5).Value, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void Test_FindNode_ReturnInCorrect()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(3);
+        list.Add(5);
+        Assert.That(list.FindNode(2), Is.Null);
+    }
 }

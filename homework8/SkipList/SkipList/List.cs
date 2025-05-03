@@ -324,13 +324,12 @@ public class List<T> : IList<T>
     /// <returns>The found node.</returns>
     public Node<T>? FindNode(T value)
     {
-        var node = this.header;
-        int currentLevel = node.Height - 1;
+        var node = (Node<T>)this.header;
         for (int i = this.header.Height - 1; i >= 0; --i)
         {
             while (node.GetNext(i) != null && node.GetNext(i).Value.CompareTo(value) < 0)
             {
-                node = (HeaderNode<T>)node.GetNext(i);
+                node = node.GetNext(i);
             }
         }
 
