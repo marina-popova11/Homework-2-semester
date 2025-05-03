@@ -78,47 +78,6 @@ public class List<T> : IList<T>
         this.Insert(index, item);
     }
 
-    // /// <summary>
-    // /// The function to add new node in skip list.
-    // /// </summary>
-    // /// <param name="key">The new node`s key.</param>
-    // /// <param name="item">The new node`s value.</param>
-    // public void Add(int key, T item)
-    // {
-    //     var node = this.FindNode(key);
-    //     if (node.Key != 0 && node.Key == key)
-    //     {
-    //         node.SetValue(item);
-    //         return;
-    //     }
-    //     int newHeight = this.GetRandomHeight();
-    //     var newNode = new Node<T>(item, newHeight);
-    //     var update = new Node<T>[Math.Max(newHeight, this.header.Height)];
-    //     var current = this.header;
-    //     for (int i = this.header.Height - 1; i >= 0; --i)
-    //     {
-    //         while (current.GetNext(i) != null && (index > 0 || current.GetNext(i).Value.CompareTo(item) < 0))
-    //         {
-    //             current = (HeaderNode<T>)current.GetNext(i);
-    //         }
-    //         if (i < newHeight)
-    //         {
-    //             update[i] = current;
-    //         }
-    //     }
-    //     for (int i = 0; i < newHeight; ++i)
-    //     {
-    //         newNode.Next[i] = update[i].GetNext(i);
-    //         update[i].Next[i] = newNode;
-    //     }
-    //     if (newHeight > this.header.Height)
-    //     {
-    //         this.header.Next = new Node<T>[newHeight];
-    //         Array.Copy(update, this.header.Next, update.Length);
-    //     }
-    //     ++this.size;
-    // }
-
     /// <summary>
     /// The function to clear the skip list.
     /// </summary>
@@ -208,7 +167,7 @@ public class List<T> : IList<T>
     /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
     public void Insert(int index, T item)
     {
-        if (index < 0)
+        if (index < 0 || index > this.size)
         {
             throw new ArgumentOutOfRangeException(nameof(index));
         }
@@ -256,9 +215,6 @@ public class List<T> : IList<T>
         {
             var newNext = new Node<T>[newHeight];
             Array.Copy(this.header.Next, newNext, this.header.Next.Length);
-
-            // this.header.Next = new Node<T>[newHeight];
-            // Array.Copy(update, this.header.Next, update.Length);
             for (int i = this.header.Height; i < newHeight; ++i)
             {
                 newNext[i] = newNode;
@@ -416,11 +372,6 @@ public class List<T> : IList<T>
 
     private int GetIndexByValue(T value)
     {
-        if (typeof(T) == typeof(int))
-        {
-            return (int)(object)value;
-        }
-
         var current = this.header.GetNext(0);
         int index = 0;
         while (current != null && current.Value.CompareTo(value) < 0)
