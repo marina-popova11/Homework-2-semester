@@ -27,6 +27,7 @@ public class List<T> : IList<T>
     public List()
     {
         this.header = new HeaderNode<T>(1);
+        this.header.Next = new Node<T>[1];
         this.size = 0;
     }
 
@@ -105,7 +106,7 @@ public class List<T> : IList<T>
     /// <exception cref="ArgumentNullException">If array is null.</exception>
     /// <exception cref="ArgumentOutOfRangeException">If index goes beyond the boundaries.</exception>
     /// <exception cref="ArgumentException">If array is not large enough.</exception>
-    public void CopyTo(T[] array, int arrayIndex)
+    public void CopyTo(T[]? array, int arrayIndex)
     {
         if (array == null)
         {
@@ -226,21 +227,6 @@ public class List<T> : IList<T>
         ++this.size;
     }
 
-    // /// <summary>
-    // /// The function to remove the node by it`s key.
-    // /// </summary>
-    // /// <param name="key">The key.</param>
-    // /// <returns>Returns true or false depending on whether the node has been deleted or not.</returns>
-    // public bool Remove(int key)
-    // {
-    //     Node<T> nodeToRemove = this.FindNode(key);
-    //     if (nodeToRemove == null || nodeToRemove.Key != key)
-    //     {
-    //         return false;
-    //     }
-    //     return this.Remove(nodeToRemove);
-    // }
-
     /// <summary>
     /// The function to remove the node.
     /// </summary>
@@ -265,7 +251,22 @@ public class List<T> : IList<T>
             update[i] = current;
         }
 
-        for (int i = 0; i <= node.Height; ++i)
+        var found = false;
+        for (int i = 0; i < this.header.Height; ++i)
+        {
+            if (update[i].GetNext(i) == node)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < this.header.Height; ++i)
         {
             if (update[i].GetNext(i) == node)
             {

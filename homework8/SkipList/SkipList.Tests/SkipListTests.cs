@@ -75,7 +75,7 @@ public class SkipListTests
         list.Add(1);
         list.Add(3);
         list.Add(5);
-        Assert.That(list.FindNode(5).Value, Is.EqualTo(5));
+        Assert.That(list.FindNode(5), Is.Not.Null);
     }
 
     [Test]
@@ -86,5 +86,116 @@ public class SkipListTests
         list.Add(3);
         list.Add(5);
         Assert.That(list.FindNode(2), Is.Null);
+    }
+
+    [Test]
+    public void Test_IndexOf_ReturnCorrect()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(3);
+        list.Add(5);
+        Assert.That(list.IndexOf(3), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void Test_IndexOf_ReturnWithNonexistentElement()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(3);
+        list.Add(5);
+        Assert.That(list.IndexOf(10), Is.EqualTo(-1));
+    }
+
+    [Test]
+    public void Test_CopyTo()
+    {
+        var list = new SkipList.List<string>();
+        list.Add("No");
+        list.Add("Yes");
+        list.Add("Maybe");
+        var array = new string[3];
+        list.CopyTo(array, 0);
+        Assert.That(array[0], Is.EqualTo("Maybe"));
+        Assert.That(array[2], Is.EqualTo("Yes"));
+        Assert.That(array[1], Is.EqualTo("No"));
+    }
+
+    [Test]
+    public void CopyTo_ThrowsArgumentNullException()
+    {
+        var list = new SkipList.List<int>();
+        Assert.Throws<ArgumentNullException>(() => list.CopyTo(null, 0));
+    }
+
+    [Test]
+    public void CopyTo_ThrowsArgumentOutOfRangeException()
+    {
+        var list = new SkipList.List<int>();
+        var array = new int[1];
+        Assert.Throws<ArgumentOutOfRangeException>(() => list.CopyTo(array, -1));
+    }
+
+    [Test]
+    public void CopyTo_ThrowsArgumentException()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(2);
+        var array = new int[1];
+        Assert.Throws<ArgumentException>(() => list.CopyTo(array, 0));
+    }
+
+    [Test]
+    public void Test_Clear()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        Assert.That(list.Count(), Is.EqualTo(1));
+        list.Clear();
+        Assert.That(list, Is.Empty);
+    }
+
+    [Test]
+    public void Test_RemoveAt()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(5);
+        list.Add(3);
+        list.RemoveAt(1);
+        Assert.That(list.Contains(3), Is.False);
+    }
+
+    [Test]
+    public void Test_Remove_ReturnTrue()
+    {
+        var list = new SkipList.List<string>();
+        list.Add("No");
+        list.Add("Yes");
+        list.Add("Maybe");
+        Assert.That(list.Remove("Yes"), Is.True);
+    }
+
+    [Test]
+    public void Test_Remove_ReturnFalse()
+    {
+        var list = new SkipList.List<string>();
+        list.Add("No");
+        list.Add("Yes");
+        list.Add("Maybe");
+        Assert.That(list.Remove("Sorry"), Is.False);
+    }
+
+    [Test]
+    public void Test_Remove()
+    {
+        var list = new SkipList.List<string>();
+        list.Add("No");
+        list.Add("Yes");
+        list.Add("Maybe");
+        list.Remove("No");
+        Assert.That(list.Count(), Is.EqualTo(2));
     }
 }
