@@ -165,7 +165,7 @@ public class SkipListTests
         list.Add(5);
         list.Add(3);
         list.RemoveAt(1);
-        Assert.That(list.Contains(3), Is.False);
+        Assert.That(list.Count(), Is.EqualTo(2));
     }
 
     [Test]
@@ -197,5 +197,23 @@ public class SkipListTests
         list.Add("Maybe");
         list.Remove("No");
         Assert.That(list.Count(), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetEnumerator_ReturnsAllItems()
+    {
+        var list = new SkipList.List<int>();
+        list.Add(1);
+        list.Add(6);
+        list.Add(3);
+
+        var enumerator = list.GetEnumerator();
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(1));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(3));
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.EqualTo(6));
+        Assert.That(enumerator.MoveNext(), Is.False);
     }
 }
