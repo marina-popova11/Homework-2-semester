@@ -1,3 +1,7 @@
+// <copyright file="Trie.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace LZW.Algorithm;
 
 /// <summary>

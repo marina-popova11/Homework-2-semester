@@ -1,4 +1,8 @@
-﻿namespace LZW.Algorithm.Tests;
+﻿// <copyright file="TestCompress.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace LZW.Algorithm.Tests;
 
 public class TestCompress
 {

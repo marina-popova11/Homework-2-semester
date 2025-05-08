@@ -1,3 +1,7 @@
+// <copyright file="TestDecompress.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace LZW.Algorithm.Tests;
 
 public class TestDecompress
