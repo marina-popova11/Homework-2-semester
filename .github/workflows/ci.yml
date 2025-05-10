@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build-Ubuntu:
     if: github.ref != 'refs/heads/hw7'&&
-      (github.event_name != 'pull_request' || github.event.pull_request.head.ref != 'Homework 7')
+      (github.event_name != 'pull_request' || github.event.pull_request.head.ref != 'hw7')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
