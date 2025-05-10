@@ -3,6 +3,31 @@ name: Build
 on: [push, pull_request]
 
 jobs:
+  build-Ubuntu:
+    if: github.ref != 'refs/heads/hw7'&&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.ref != 'Homework 7')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Build
+        run: |
+          for f in $(find . -name "*.sln"); do
+            dotnet build $f
+          done
+
+      - name: Run tests
+        run: |
+          for f in $(find . -name "*.sln"); do
+            dotnet test $f
+          done
+
   build-Windows:
     runs-on: windows-latest
     steps:
