@@ -1,5 +1,5 @@
-﻿// <copyright file="Tests.cs" company="Marina-Popova">
-// Copyright (c) Marina-Popova. All rights reserved.
+﻿// <copyright file="Tests.cs" company="marina-popova11">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace FinaTest.Tests;
