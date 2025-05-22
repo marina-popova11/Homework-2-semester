@@ -1,5 +1,5 @@
-// <copyright file="Prime.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+// <copyright file="Prime.cs" author="marina-popova11">
+// under MIT License
 // </copyright>
 
 namespace MyLinq;
