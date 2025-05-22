@@ -1,5 +1,5 @@
-﻿// <copyright file="Tests.cs" author="marina-popova11">
-// under MIT License
+﻿// <copyright file="Tests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace MyLinq;
