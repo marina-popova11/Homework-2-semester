@@ -2,21 +2,40 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace FinaTest.Tests;
+namespace FinalTest.Tests;
 
 /// <summary>
 /// Tests for.
 /// </summary>
 public class Tests
 {
-    [SetUp]
-    public void Setup()
+    [Test]
+    public void Test_CountForInteger()
     {
+        var list = new GenericList<int>();
+        list.Add(13);
+        list.Add(0);
+        list.Add(0);
+        var checker = new IntNullChecker();
+        Assert.That(list.Count(checker), Is.EqualTo(2));
     }
 
     [Test]
-    public void Test1()
+    public void Test_CountForString()
     {
-        Assert.Pass();
+        var list = new GenericList<string>();
+        list.Add("13");
+        list.Add(string.Empty);
+        list.Add(null);
+        var checker = new StringNullChecker();
+        Assert.That(list.Count(checker), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void Test_ReturnZero()
+    {
+        var list = new GenericList<string>();
+        var checker = new StringNullChecker();
+        Assert.That(list.Count(checker), Is.EqualTo(0));
     }
 }
