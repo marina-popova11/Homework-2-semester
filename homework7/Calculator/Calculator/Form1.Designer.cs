@@ -225,7 +225,7 @@ partial class Form1
         label1.Margin = new Padding(3);
         label1.Name = "label1";
         label1.RightToLeft = RightToLeft.Yes;
-        label1.Size = new Size(113, 33);
+        label1.Size = new Size(234, 33);
         label1.TabIndex = 15;
         label1.Text = "label1";
         label1.TextAlign = ContentAlignment.MiddleRight;
@@ -278,7 +278,7 @@ partial class Form1
         button15.FlatStyle = FlatStyle.Popup;
         button15.Font = new Font("Stencil", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         button15.ForeColor = Color.Transparent;
-        button15.Location = new Point(209, 204);
+        button15.Location = new Point(207, 204);
         button15.Name = "button15";
         button15.Size = new Size(37, 37);
         button15.TabIndex = 19;
