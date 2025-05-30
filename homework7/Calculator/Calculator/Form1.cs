@@ -11,10 +11,96 @@ public partial class Form1 : Form
 {
     private readonly Calc calculator = new Calc();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Form1"/> class.
+    /// </summary>
     public Form1()
     {
         this.InitializeComponent();
+        this.KeyPreview = true;
         this.UpdateDisplay();
+        this.KeyDown += new KeyEventHandler(this.Form1_KeyDown);
+    }
+
+    private void Form1_KeyDown(object sender, KeyEventArgs e)
+    {
+        switch (e.KeyCode)
+        {
+            case Keys.D0:
+            case Keys.NumPad0:
+                this.Button1_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D1:
+            case Keys.NumPad1:
+                this.Button2_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D2:
+            case Keys.NumPad2:
+                this.Button3_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D3:
+            case Keys.NumPad3:
+                this.Button4_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D4:
+            case Keys.NumPad4:
+                this.Button5_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D5:
+            case Keys.NumPad5:
+                this.Button6_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D6:
+            case Keys.NumPad6:
+                this.Button7_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D7:
+            case Keys.NumPad7:
+                this.Button8_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D8:
+            case Keys.NumPad8:
+                this.Button9_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.D9:
+            case Keys.NumPad9:
+                this.Button10_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Add:
+                this.Button13_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Subtract:
+                this.Button15_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Multiply:
+                this.Button14_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Divide:
+                this.Button16_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Enter:
+                this.Button12_Click(sender, EventArgs.Empty);
+                break;
+
+            case Keys.Back:
+            case Keys.Delete:
+                this.Button11_Click(sender, EventArgs.Empty);
+                break;
+        }
     }
 
     private void Button1_Click(object sender, EventArgs e)
