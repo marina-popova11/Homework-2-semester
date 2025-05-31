@@ -1,6 +1,6 @@
 ﻿namespace Calculator;
 
-partial class Form1
+partial class Calculator
 {
     /// <summary>
     ///  Required designer variable.
@@ -29,7 +29,7 @@ partial class Form1
     /// </summary>
     private void InitializeComponent()
     {
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculator));
         pictureBox1 = new PictureBox();
         button1 = new Button();
         button2 = new Button();

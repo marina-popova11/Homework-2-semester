@@ -4,4 +4,4 @@
 
 using Calculator;
 
-Application.Run(new Form1());
+Application.Run(new Calculator.Calculator());

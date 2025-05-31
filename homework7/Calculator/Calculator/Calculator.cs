@@ -7,14 +7,14 @@ namespace Calculator;
 /// <summary>
 /// This Form1.
 /// </summary>
-public partial class Form1 : Form
+public partial class Calculator : Form
 {
     private readonly Calc calculator = new Calc();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Form1"/> class.
+    /// Initializes a new instance of the <see cref="Calculator"/> class.
     /// </summary>
-    public Form1()
+    public Calculator()
     {
         this.InitializeComponent();
         this.KeyPreview = true;
