@@ -1,4 +1,4 @@
 [*.cs]
 
-# IDE0160: Преобразовать в namespace с заданной областью видимости блока
-dotnet_diagnostic.IDE0160.severity = none
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
