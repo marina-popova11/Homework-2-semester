@@ -91,14 +91,6 @@ string ReverseConversion(string modifiedLine, int index)
 
 return 0;
 
-bool TestTransformation()
-{
-      return ("nwekeed", 6) == Transformation("weekend");
-}
+bool TestTransformation() => ("nwekeed", 6) == Transformation("weekend");
 
-bool TestReverseConversion()
-{
-      string str = "psaccuuphh";
-      int index = 1;
-      return ReverseConversion(str, index) == "chupachups";
-}
+bool TestReverseConversion() => ReverseConversion("psaccuuphh", 1) == "chupachups";
