@@ -1,0 +1,5 @@
+[*.cs]
+csharp_indent_style = block
+
+# IDE0160: Преобразовать в namespace с заданной областью видимости блока
+dotnet_diagnostic.IDE0160.severity = none
