@@ -73,9 +73,10 @@ partial class Calculator
         button1.Name = "button1";
         button1.Size = new Size(44, 37);
         button1.TabIndex = 4;
+        button1.Tag = "0";
         button1.Text = "0";
         button1.UseVisualStyleBackColor = false;
-        button1.Click += Button1_Click;
+        button1.Click += DigitButtonClick;
         // 
         // button2
         // 
@@ -87,9 +88,10 @@ partial class Calculator
         button2.Name = "button2";
         button2.Size = new Size(46, 37);
         button2.TabIndex = 5;
+        button2.Tag = "1";
         button2.Text = "1";
         button2.UseVisualStyleBackColor = false;
-        button2.Click += Button2_Click;
+        button2.Click += DigitButtonClick;
         // 
         // button3
         // 
@@ -101,9 +103,10 @@ partial class Calculator
         button3.Name = "button3";
         button3.Size = new Size(44, 37);
         button3.TabIndex = 6;
+        button3.Tag = "2";
         button3.Text = "2";
         button3.UseVisualStyleBackColor = false;
-        button3.Click += Button3_Click;
+        button3.Click += DigitButtonClick;
         // 
         // button4
         // 
@@ -115,9 +118,10 @@ partial class Calculator
         button4.Name = "button4";
         button4.Size = new Size(42, 37);
         button4.TabIndex = 7;
+        button4.Tag = "3";
         button4.Text = "3";
         button4.UseVisualStyleBackColor = false;
-        button4.Click += Button4_Click;
+        button4.Click += DigitButtonClick;
         // 
         // button5
         // 
@@ -129,9 +133,10 @@ partial class Calculator
         button5.Name = "button5";
         button5.Size = new Size(46, 37);
         button5.TabIndex = 8;
+        button5.Tag = "4";
         button5.Text = "4";
         button5.UseVisualStyleBackColor = false;
-        button5.Click += Button5_Click;
+        button5.Click += DigitButtonClick;
         // 
         // button6
         // 
@@ -143,9 +148,10 @@ partial class Calculator
         button6.Name = "button6";
         button6.Size = new Size(44, 37);
         button6.TabIndex = 9;
+        button6.Tag = "5";
         button6.Text = "5";
         button6.UseVisualStyleBackColor = false;
-        button6.Click += Button6_Click;
+        button6.Click += DigitButtonClick;
         // 
         // button7
         // 
@@ -157,9 +163,10 @@ partial class Calculator
         button7.Name = "button7";
         button7.Size = new Size(44, 37);
         button7.TabIndex = 10;
+        button7.Tag = "6";
         button7.Text = "6";
         button7.UseVisualStyleBackColor = false;
-        button7.Click += Button7_Click;
+        button7.Click += DigitButtonClick;
         // 
         // button8
         // 
@@ -171,9 +178,10 @@ partial class Calculator
         button8.Name = "button8";
         button8.Size = new Size(46, 37);
         button8.TabIndex = 11;
+        button8.Tag = "7";
         button8.Text = "7";
         button8.UseVisualStyleBackColor = false;
-        button8.Click += Button8_Click;
+        button8.Click += DigitButtonClick;
         // 
         // button9
         // 
@@ -185,9 +193,10 @@ partial class Calculator
         button9.Name = "button9";
         button9.Size = new Size(44, 37);
         button9.TabIndex = 12;
+        button9.Tag = "8";
         button9.Text = "8";
         button9.UseVisualStyleBackColor = false;
-        button9.Click += Button9_Click;
+        button9.Click += DigitButtonClick;
         // 
         // button10
         // 
@@ -199,9 +208,10 @@ partial class Calculator
         button10.Name = "button10";
         button10.Size = new Size(44, 37);
         button10.TabIndex = 13;
+        button10.Tag = "9";
         button10.Text = "9";
         button10.UseVisualStyleBackColor = false;
-        button10.Click += Button10_Click;
+        button10.Click += DigitButtonClick;
         // 
         // button11
         // 
@@ -309,7 +319,7 @@ partial class Calculator
         panel2.Size = new Size(233, 76);
         panel2.TabIndex = 21;
         // 
-        // Form1
+        // Calculator
         // 
         AutoScaleDimensions = new SizeF(120F, 120F);
         AutoScaleMode = AutoScaleMode.Dpi;
@@ -336,7 +346,9 @@ partial class Calculator
         Controls.Add(pictureBox1);
         Cursor = Cursors.Hand;
         ForeColor = Color.Black;
-        Name = "Form1";
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+        Name = "Calculator";
         ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         panel2.ResumeLayout(false);
         ResumeLayout(false);

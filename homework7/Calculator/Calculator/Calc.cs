@@ -5,7 +5,7 @@
 namespace Calculator;
 
 /// <summary>
-/// This class to calculate.
+/// This class to .
 /// </summary>
 public class Calc
 {
@@ -64,7 +64,7 @@ public class Calc
         {
             if (this.charOperator != '\0')
             {
-                this.Calculating();
+                this.Calculate();
             }
 
             return this.currentValue;
@@ -72,7 +72,7 @@ public class Calc
 
         if (this.charOperator != '\0' && !this.isNewOperation)
         {
-            this.Calculating();
+            this.Calculate();
         }
 
         this.charOperator = character;
@@ -82,11 +82,11 @@ public class Calc
     }
 
     /// <summary>
-    /// The function to calculating value.
+    /// The function to Calculate value.
     /// </summary>
     /// <returns>The result.</returns>
     /// <exception cref="DivideByZeroException">If current value is equal zero.</exception>
-    public double Calculating()
+    public double Calculate()
     {
         switch (this.charOperator)
         {
@@ -106,7 +106,8 @@ public class Calc
                 }
                 else
                 {
-                    throw new DivideByZeroException();
+                    MessageBox.Show("Error: Division by zero impossible!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return this.currentValue;
                 }
 
                 break;

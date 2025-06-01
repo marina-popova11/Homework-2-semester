@@ -78,14 +78,4 @@ public class CalcTests
         var result = calculator.OperatorEnter('=');
         Assert.That(result, Is.EqualTo(5));
     }
-
-    [Test]
-    public void Test_Division_ThrowsException()
-    {
-        var calculator = new Calc();
-        calculator.NumberEnter(10);
-        calculator.OperatorEnter('/');
-        calculator.NumberEnter(0);
-        Assert.Throws<DivideByZeroException>(() => calculator.OperatorEnter('='));
-    }
 }
